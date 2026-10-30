@@ -1,0 +1,105 @@
+---
+import { siteConfig } from '../data/siteConfig';
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+function formatHref(href: string) {
+  if (href === '/') return `${baseUrl}/` || '/';
+  return `${baseUrl}${href}`;
+}
+---
+
+<footer class="mt-auto border-t border-[#1F263B] bg-[#070911]/90 backdrop-blur-md pt-12 pb-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+      
+      <!-- Brand & Mission -->
+      <div class="md:col-span-2 space-y-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-[#111522] border border-cyan-500/40 flex items-center justify-center">
+            <span class="font-mono text-cyan-400 font-bold">D</span>
+          </div>
+          <span class="font-heading font-black tracking-wider text-xl text-white">
+            DUY<span class="text-purple-400">VERSE</span>
+          </span>
+        </div>
+        <p class="text-sm text-gray-400 max-w-md font-sans leading-relaxed">
+          {siteConfig.author.bio}
+        </p>
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#111522] border border-[#1F263B] text-xs font-mono text-gray-400">
+          <span class="h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span>HOSTED ON GITHUB PAGES • STATIC 0-RUNTIME</span>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-4">NAVIGATION</h4>
+        <ul class="space-y-2 text-sm font-mono">
+          {siteConfig.navigation.map((item) => (
+            <li>
+              <a 
+                href={formatHref(item.href)}
+                class="text-gray-400 hover:text-white hover:translate-x-1 inline-block transition-transform duration-150"
+              >
+                // {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Connect & Socials -->
+      <div>
+        <h4 class="text-xs font-mono text-purple-400 uppercase tracking-widest mb-4">TRANSMISSIONS</h4>
+        <ul class="space-y-2 text-sm font-mono">
+          <li>
+            <a 
+              href={siteConfig.author.github} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-gray-400 hover:text-cyan-400 flex items-center gap-2 transition-colors"
+            >
+              <span>GitHub</span>
+              <span class="text-xs text-gray-600">↗</span>
+            </a>
+          </li>
+          <li>
+            <a 
+              href={siteConfig.author.linkedin} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              class="text-gray-400 hover:text-purple-400 flex items-center gap-2 transition-colors"
+            >
+              <span>LinkedIn</span>
+              <span class="text-xs text-gray-600">↗</span>
+            </a>
+          </li>
+          <li>
+            <a 
+              href={`mailto:${siteConfig.author.email}`}
+              class="text-gray-400 hover:text-emerald-400 flex items-center gap-2 transition-colors"
+            >
+              <span>Email Transmission</span>
+              <span class="text-xs text-gray-600">↗</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom Line -->
+    <div class="pt-6 border-t border-[#1F263B]/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-gray-500">
+      <div>
+        © 2026 DUYVERSE. All rights reserved.
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-cyan-400/80">CORE: ASTRO 7</span>
+        <span>•</span>
+        <span class="text-purple-400/80">STYLE: CYBER DYNAMICS</span>
+        <span>•</span>
+        <span class="text-emerald-400/80">AUDIO: LO-FI FLOW</span>
+      </div>
+    </div>
+  </div>
+</footer>

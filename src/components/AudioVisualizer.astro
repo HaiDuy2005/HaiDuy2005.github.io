@@ -1,0 +1,233 @@
+---
+// AudioVisualizer.astro - Real-time HTML5 Canvas Audio Visualizer for the Lab
+---
+
+<div class="rounded-xl bg-[#111522]/90 border border-[#1F263B] p-6 backdrop-blur-md relative overflow-hidden">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+    <div>
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        <h3 class="text-base font-heading font-bold text-white tracking-wide">
+          MUSIC × CODE // AUDIO REACTIVE CANVAS
+        </h3>
+      </div>
+      <p class="text-xs font-mono text-gray-400 mt-1">
+        Web Audio API AnalyserNode • Real-time FFT Frequency Spectrum
+      </p>
+    </div>
+
+    <!-- Controls -->
+    <div class="flex items-center gap-3">
+      <button
+        id="lab-audio-toggle"
+        type="button"
+        class="px-4 py-2 rounded-lg bg-[#161C2E] border border-cyan-500/40 text-cyan-300 hover:text-white hover:bg-cyan-500/20 text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer shadow-[0_0_15px_rgba(0,229,255,0.2)]"
+      >
+        <svg id="lab-play-ico" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <svg id="lab-stop-ico" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
+          <rect x="6" y="6" width="12" height="12"></rect>
+        </svg>
+        <span id="lab-audio-status">START BEAT STREAM</span>
+      </button>
+
+      <select
+        id="visualizer-style"
+        class="bg-[#161C2E] border border-[#1F263B] text-gray-300 text-xs font-mono rounded-lg px-2.5 py-2 focus:outline-none focus:border-cyan-400 cursor-pointer"
+      >
+        <option value="bars">Spectrum Bars</option>
+        <option value="wave">Oscilloscope Wave</option>
+        <option value="circle">Cyber Ring</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Canvas Visualizer Screen -->
+  <div class="relative w-full aspect-[21/9] min-h-[220px] rounded-lg bg-[#070911] border border-[#1F263B] overflow-hidden flex items-center justify-center">
+    <canvas id="audio-canvas" class="w-full h-full block"></canvas>
+    <div id="canvas-overlay-text" class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none p-4 bg-[#080A12]/60">
+      <span class="text-xs font-mono text-cyan-400 tracking-widest mb-1">SYSTEM IDLE</span>
+      <span class="text-sm font-sans text-gray-400">Nhấn "START BEAT STREAM" để kích hoạt mô phỏng âm thanh & visualizer</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  let audioCtx: AudioContext | null = null;
+  let analyser: AnalyserNode | null = null;
+  let isRunning = false;
+  let animId: number = 0;
+  let synthInterval: any = null;
+
+  const btn = document.getElementById('lab-audio-toggle');
+  const playIco = document.getElementById('lab-play-ico');
+  const stopIco = document.getElementById('lab-stop-ico');
+  const statusTxt = document.getElementById('lab-audio-status');
+  const overlay = document.getElementById('canvas-overlay-text');
+  const styleSelect = document.getElementById('visualizer-style') as HTMLSelectElement;
+  const canvas = document.getElementById('audio-canvas') as HTMLCanvasElement;
+  const ctx = canvas ? canvas.getContext('2d') : null;
+
+  function resizeCanvas() {
+    if (!canvas) return;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  // Procedural Beat Synth
+  const scale = [130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00];
+  let step = 0;
+
+  function triggerSynthBeat() {
+    if (!audioCtx || !analyser || !isRunning) return;
+
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    // Kick drum pulse every 4 steps
+    if (step % 4 === 0) {
+      const kickOsc = audioCtx.createOscillator();
+      const kickGain = audioCtx.createGain();
+      kickOsc.frequency.setValueAtTime(140, audioCtx.currentTime);
+      kickOsc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 0.18);
+      kickGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      kickGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+      kickOsc.connect(kickGain);
+      kickGain.connect(analyser);
+      kickGain.connect(audioCtx.destination);
+      kickOsc.start();
+      kickOsc.stop(audioCtx.currentTime + 0.2);
+    }
+
+    // Melodic Synth Note
+    const freq = scale[Math.floor(Math.random() * scale.length)];
+    osc.type = (step % 2 === 0) ? 'sawtooth' : 'triangle';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+    gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.06, audioCtx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+
+    osc.connect(gain);
+    gain.connect(analyser);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.45);
+    step++;
+  }
+
+  function draw() {
+    if (!ctx || !canvas || !analyser) return;
+    animId = requestAnimationFrame(draw);
+
+    const bufferLength = analyser.frequencyBinCount;
+    const dataArray = new Uint8Array(bufferLength);
+    const style = styleSelect?.value || 'bars';
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (style === 'bars') {
+      analyser.getByteFrequencyData(dataArray);
+      const barCount = 48;
+      const barWidth = (canvas.width / barCount);
+      let x = 0;
+
+      for (let i = 0; i < barCount; i++) {
+        const val = dataArray[i * 2] || 0;
+        const barHeight = (val / 255) * (canvas.height * 0.85);
+
+        // Cyber Gradient for bars
+        const grad = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
+        grad.addColorStop(0, '#00E5FF');
+        grad.addColorStop(0.5, '#8B5CF6');
+        grad.addColorStop(1, '#B8FF5C');
+
+        ctx.fillStyle = grad;
+        ctx.fillRect(x, canvas.height - barHeight, barWidth - 3, barHeight);
+        x += barWidth;
+      }
+    } else if (style === 'wave') {
+      analyser.getByteTimeDomainData(dataArray);
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = '#00E5FF';
+      ctx.shadowColor = '#00E5FF';
+      ctx.shadowBlur = 10;
+      ctx.beginPath();
+
+      const sliceWidth = canvas.width / bufferLength;
+      let x = 0;
+
+      for (let i = 0; i < bufferLength; i++) {
+        const v = dataArray[i] / 128.0;
+        const y = (v * canvas.height) / 2;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+        x += sliceWidth;
+      }
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    } else if (style === 'circle') {
+      analyser.getByteFrequencyData(dataArray);
+      const cx = canvas.width / 2;
+      const cy = canvas.height / 2;
+      const baseRadius = Math.min(cx, cy) * 0.4;
+      const points = 64;
+
+      ctx.beginPath();
+      for (let i = 0; i < points; i++) {
+        const angle = (i / points) * Math.PI * 2;
+        const val = dataArray[i] || 0;
+        const r = baseRadius + (val / 255) * 60;
+        const x = cx + Math.cos(angle) * r;
+        const y = cy + Math.sin(angle) * r;
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = '#8B5CF6';
+      ctx.lineWidth = 4;
+      ctx.shadowColor = '#8B5CF6';
+      ctx.shadowBlur = 15;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+  }
+
+  if (btn) {
+    btn.addEventListener('click', () => {
+      if (!isRunning) {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+          audioCtx = new AudioContextClass();
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 256;
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        resizeCanvas();
+        isRunning = true;
+        playIco?.classList.add('hidden');
+        stopIco?.classList.remove('hidden');
+        if (statusTxt) statusTxt.textContent = 'STOP BEAT STREAM';
+        overlay?.classList.add('hidden');
+        synthInterval = setInterval(triggerSynthBeat, 240);
+        draw();
+      } else {
+        isRunning = false;
+        clearInterval(synthInterval);
+        cancelAnimationFrame(animId);
+        playIco?.classList.remove('hidden');
+        stopIco?.classList.add('hidden');
+        if (statusTxt) statusTxt.textContent = 'START BEAT STREAM';
+        overlay?.classList.remove('hidden');
+        if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    });
+  }
+</script>

@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('posts', ({ data }) => {
+  return import.meta.env.PROD ? !data.draft : true;
+});
+
+const sortedPosts = allPosts.sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+
+// Collect all unique categories
+const categories = ['All', ...new Set(allPosts.map((p) => p.data.category))];
+
+// Collect top tags
+const allTags = [...new Set(allPosts.flatMap((p) => p.data.tags))];
+---
+
+<BaseLayout 
+  title="Transmissions & Notes — DUYVERSE Blog"
+  description="Góc ghi chú công nghệ, bài viết về Web, Cloud, AI và cảm hứng âm nhạc của Hải Duy viết bằng Markdown."
+>
+
+  <div class="space-y-8">
+    
+    <!-- Header -->
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/40 border border-purple-500/30 text-xs font-mono text-purple-300">
+        <span>// TRANSMISSIONS & MARKDOWN LOGS</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-heading font-black text-white">
+        Bài Viết & Ghi Chú Học Tập
+      </h1>
+      <p class="text-sm sm:text-base text-gray-400 max-w-2xl font-sans">
+        Toàn bộ bài viết được biên soạn bằng định dạng Markdown thuần túy. Chia sẻ những kiến thức tích lũy về lập trình, triển khai hệ thống Cloud, AI workflows và văn hóa Hip-hop.
+      </p>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="p-4 rounded-xl bg-[#111522]/90 border border-[#1F263B] backdrop-blur-md space-y-4">
+      
+      <div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
+        <!-- Search Input -->
+        <div class="relative flex-1 max-w-md">
+          <svg class="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <input 
+            type="text" 
+            id="post-search-input"
+            placeholder="Tìm kiếm bài viết theo tiêu đề, nội dung hoặc tag..."
+            class="w-full pl-10 pr-4 py-2 rounded-lg bg-[#0C101A] border border-[#1F263B] text-white text-xs sm:text-sm font-mono focus:outline-none focus:border-purple-400 placeholder:text-gray-500"
+          />
+        </div>
+
+        <!-- Category Filter Buttons -->
+        <div class="flex items-center gap-1.5 overflow-x-auto pb-1 md:pb-0" id="post-category-filters">
+          {categories.map((cat, i) => (
+            <button
+              type="button"
+              data-category={cat}
+              class:list={[
+                "px-3 py-1.5 rounded-lg text-xs font-mono tracking-wider transition-colors cursor-pointer shrink-0 post-filter-btn",
+                i === 0 
+                  ? "bg-purple-500 text-white font-bold shadow-[0_0_12px_rgba(139,92,246,0.3)]" 
+                  : "bg-[#161C2E] border border-[#1F263B] text-gray-400 hover:text-white"
+              ]}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Quick Tag Filter Pills -->
+      <div class="pt-3 border-t border-[#1F263B]/60 flex items-center gap-2 flex-wrap text-xs font-mono">
+        <span class="text-gray-500 uppercase tracking-wider text-[11px]">Popular Tags:</span>
+        {allTags.map((tag) => (
+          <button
+            type="button"
+            data-tag={tag}
+            class="tag-filter-btn px-2.5 py-0.5 rounded bg-[#161C2E] border border-[#1F263B] text-gray-400 hover:text-cyan-400 hover:border-cyan-500/40 cursor-pointer transition-colors"
+          >
+            #{tag}
+          </button>
+        ))}
+      </div>
+
+    </div>
+
+    <!-- Posts Grid -->
+    <div id="posts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {sortedPosts.map((post) => (
+        <div 
+          class="post-item"
+          data-category={post.data.category}
+          data-tags={post.data.tags.join(',')}
+          data-search={`${post.data.title} ${post.data.description} ${post.data.tags.join(' ')}`.toLowerCase()}
+        >
+          <PostCard post={post} />
+        </div>
+      ))}
+    </div>
+
+    <!-- Empty State -->
+    <div id="no-posts-found" class="hidden py-16 text-center rounded-xl bg-[#111522]/40 border border-[#1F263B]">
+      <div class="text-purple-400 font-mono text-base mb-1">// ZERO RESULTS</div>
+      <p class="text-sm text-gray-400">Không tìm thấy bài viết nào khớp với tìm kiếm của bạn.</p>
+    </div>
+
+  </div>
+
+</BaseLayout>
+
+<script>
+  const searchInput = document.getElementById('post-search-input') as HTMLInputElement;
+  const catBtns = document.querySelectorAll<HTMLButtonElement>('.post-filter-btn');
+  const tagBtns = document.querySelectorAll<HTMLButtonElement>('.tag-filter-btn');
+  const postItems = document.querySelectorAll<HTMLElement>('.post-item');
+  const noPosts = document.getElementById('no-posts-found');
+
+  let activeCat = 'All';
+  let activeTag = '';
+  let query = '';
+
+  function filterPosts() {
+    let count = 0;
+
+    postItems.forEach((item) => {
+      const cat = item.getAttribute('data-category') || '';
+      const tags = (item.getAttribute('data-tags') || '').split(',');
+      const text = item.getAttribute('data-search') || '';
+
+      const matchCat = activeCat === 'All' || cat.toLowerCase() === activeCat.toLowerCase();
+      const matchTag = activeTag === '' || tags.includes(activeTag);
+      const matchQuery = query === '' || text.includes(query);
+
+      if (matchCat && matchTag && matchQuery) {
+        item.classList.remove('hidden');
+        count++;
+      } else {
+        item.classList.add('hidden');
+      }
+    });
+
+    if (noPosts) {
+      if (count === 0) noPosts.classList.remove('hidden');
+      else noPosts.classList.add('hidden');
+    }
+  }
+
+  // Search Input
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      query = (e.target as HTMLInputElement).value.trim().toLowerCase();
+      filterPosts();
+    });
+  }
+
+  // Category Buttons
+  catBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      catBtns.forEach((b) => {
+        b.classList.remove('bg-purple-500', 'text-white', 'font-bold', 'shadow-[0_0_12px_rgba(139,92,246,0.3)]');
+        b.classList.add('bg-[#161C2E]', 'border', 'border-[#1F263B]', 'text-gray-400');
+      });
+
+      btn.classList.add('bg-purple-500', 'text-white', 'font-bold', 'shadow-[0_0_12px_rgba(139,92,246,0.3)]');
+      btn.classList.remove('bg-[#161C2E]', 'border-[#1F263B]', 'text-gray-400');
+
+      activeCat = btn.getAttribute('data-category') || 'All';
+      filterPosts();
+    });
+  });
+
+  // Tag Buttons
+  tagBtns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const tag = btn.getAttribute('data-tag') || '';
+      if (activeTag === tag) {
+        activeTag = '';
+        btn.classList.remove('bg-cyan-500/20', 'text-cyan-300', 'border-cyan-400');
+      } else {
+        tagBtns.forEach((t) => t.classList.remove('bg-cyan-500/20', 'text-cyan-300', 'border-cyan-400'));
+        activeTag = tag;
+        btn.classList.add('bg-cyan-500/20', 'text-cyan-300', 'border-cyan-400');
+      }
+      filterPosts();
+    });
+  });
+</script>

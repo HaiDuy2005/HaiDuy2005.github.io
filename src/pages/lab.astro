@@ -1,0 +1,261 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AudioVisualizer from '../components/AudioVisualizer.astro';
+---
+
+<BaseLayout
+  title="Digital Lab & Playground — DUYVERSE"
+  description="Không gian thực nghiệm công nghệ, AI workflows, Canvas visualizer và các mini tools tương tác."
+>
+
+  <div class="space-y-12">
+    
+    <!-- Header -->
+    <div class="space-y-3">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/40 border border-emerald-500/30 text-xs font-mono text-emerald-300">
+        <span>// EXPERIMENTAL PLAYGROUND</span>
+      </div>
+      <h1 class="text-3xl sm:text-4xl font-heading font-black text-white">
+        Duyverse Lab // R&D Studio
+      </h1>
+      <p class="text-sm sm:text-base text-gray-400 max-w-2xl font-sans">
+        Khu vực thử nghiệm những ý tưởng công nghệ, thuật toán âm thanh, hiệu ứng đồ họa và công cụ nhỏ. Tất cả đều chạy trực tiếp 100% trên trình duyệt và không yêu cầu máy chủ ngoài.
+      </p>
+    </div>
+
+    <!-- EXPERIMENT 1: MUSIC x CODE AUDIO REACTIVE CANVAS -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 font-mono text-xs text-cyan-400">
+          <span class="px-2 py-0.5 rounded bg-cyan-950/50 border border-cyan-500/30 text-[10px] font-bold">EXP 01</span>
+          <span>AUDIO VISUALIZER // WEB AUDIO API</span>
+        </div>
+        <span class="px-2.5 py-0.5 rounded text-[11px] font-mono text-emerald-400 border border-emerald-500/30 bg-emerald-950/20">
+          ● Interactive
+        </span>
+      </div>
+
+      <AudioVisualizer />
+    </section>
+
+    <!-- EXPERIMENT 2 & 3: GRID -->
+    <section class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      
+      <!-- EXPERIMENT 2: CYBER MATRIX RAIN CANVAS -->
+      <div class="rounded-xl bg-[#111522]/90 border border-[#1F263B] p-6 backdrop-blur-md flex flex-col justify-between space-y-4">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2 font-mono text-xs text-purple-400">
+              <span class="px-2 py-0.5 rounded bg-purple-950/50 border border-purple-500/30 text-[10px] font-bold">EXP 02</span>
+              <span>CYBER MATRIX RAIN // CANVAS 2D</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono text-cyan-400 border border-cyan-500/30 bg-cyan-950/20">
+              ● Live Canvas
+            </span>
+          </div>
+
+          <h3 class="text-lg font-heading font-bold text-white mb-1">
+            Digital Stream Matrix
+          </h3>
+          <p class="text-xs text-gray-400 font-sans mb-4">
+            Mô phỏng mưa ký tự kỹ thuật số cyberpunk. Di chuột vào khung hình để tạo hiệu ứng phân tán ma trận.
+          </p>
+
+          <div class="relative w-full h-56 rounded-lg bg-[#070911] border border-[#1F263B] overflow-hidden">
+            <canvas id="matrix-canvas" class="w-full h-full block"></canvas>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-3 border-t border-[#1F263B] text-xs font-mono text-gray-400">
+          <span>FPS: ~60 (RequestAnimationFrame)</span>
+          <button id="matrix-toggle-color" class="px-2.5 py-1 rounded bg-[#161C2E] border border-cyan-500/40 text-cyan-300 hover:text-white text-[11px] cursor-pointer">
+            Đổi màu Neon
+          </button>
+        </div>
+      </div>
+
+      <!-- EXPERIMENT 3: CYBER SLUG & RHYME HELPER -->
+      <div class="rounded-xl bg-[#111522]/90 border border-[#1F263B] p-6 backdrop-blur-md flex flex-col justify-between space-y-4">
+        <div>
+          <div class="flex items-center justify-between mb-3">
+            <div class="flex items-center gap-2 font-mono text-xs text-emerald-400">
+              <span class="px-2 py-0.5 rounded bg-emerald-950/50 border border-emerald-500/30 text-[10px] font-bold">EXP 03</span>
+              <span>DEV UTILITY // SLUG & WORD ANALYZER</span>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono text-emerald-400 border border-emerald-500/30 bg-emerald-950/20">
+              ● Ready Tool
+            </span>
+          </div>
+
+          <h3 class="text-lg font-heading font-bold text-white mb-1">
+            Cyber Slug & Vần Điệu Analyzer
+          </h3>
+          <p class="text-xs text-gray-400 font-sans mb-4">
+            Mini tool chuyển đổi tiêu đề thành URL Slug chuẩn SEO tiếng Việt và phân tích độ dài âm tiết hỗ trợ viết bài & sáng tác Rap.
+          </p>
+
+          <div class="space-y-3 font-mono text-xs">
+            <div>
+              <label class="block text-gray-400 mb-1 uppercase text-[11px]">Nhập tiêu đề hoặc câu Rap:</label>
+              <input 
+                type="text" 
+                id="slug-input"
+                placeholder="VD: Xây dựng Portfolio Cá nhân với Astro và GitHub Pages"
+                class="w-full px-3 py-2 rounded-lg bg-[#0C101A] border border-[#1F263B] text-white focus:outline-none focus:border-cyan-400 text-xs font-mono"
+              />
+            </div>
+
+            <div class="p-3 rounded-lg bg-[#0C101A] border border-[#1F263B] space-y-1">
+              <span class="text-gray-500 uppercase text-[10px] block">Slug tạo ra:</span>
+              <div id="slug-output" class="text-cyan-400 font-bold select-all break-all">
+                xay-dung-portfolio-ca-nhan-voi-astro-va-github-pages
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between text-gray-400 text-[11px]">
+              <span>Số từ: <strong id="word-count" class="text-white">10</strong></span>
+              <span>Số ký tự: <strong id="char-count" class="text-white">55</strong></span>
+              <span>Trạng thái: <strong class="text-emerald-400">SEO Valid</strong></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-[#1F263B] flex items-center justify-end">
+          <button 
+            id="copy-slug-btn"
+            type="button"
+            class="px-3 py-1.5 rounded-lg bg-[#161C2E] border border-cyan-500/40 text-cyan-300 hover:text-white text-xs font-mono font-semibold cursor-pointer"
+          >
+            Chép Slug vào Clipboard
+          </button>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- EXPERIMENT 4: PROTOTYPE NOTICE (IN PROGRESS) -->
+    <section class="p-6 rounded-xl bg-[#111522]/60 border border-dashed border-[#1F263B]">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 font-mono text-xs text-amber-400 mb-1">
+            <span class="px-2 py-0.5 rounded bg-amber-950/50 border border-amber-500/30 text-[10px] font-bold">EXP 04</span>
+            <span>AI WORKFLOW PIPELINE // LOCAL LLM BENCHMARK</span>
+          </div>
+          <h3 class="text-base font-heading font-bold text-white">
+            Bộ đo hiệu năng Prompt & Tokenizer
+          </h3>
+          <p class="text-xs text-gray-400 mt-1">
+            Đang trong giai đoạn thiết kế kiến trúc client-side WebAssembly để chạy mô hình AI trực tiếp trong sandbox browser.
+          </p>
+        </div>
+
+        <div class="shrink-0">
+          <span class="px-3 py-1 rounded-md text-xs font-mono border border-amber-500/40 text-amber-400 bg-amber-950/30">
+            ⏳ In Progress
+          </span>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+</BaseLayout>
+
+<script>
+  // MATRIX RAIN CANVAS IMPLEMENTATION
+  const mCanvas = document.getElementById('matrix-canvas') as HTMLCanvasElement;
+  const colorToggle = document.getElementById('matrix-toggle-color');
+
+  if (mCanvas) {
+    const mCtx = mCanvas.getContext('2d');
+    const letters = '01DUYVERSE{}<>/*+=~アイウエオカキクケコサシスセソタチツテト';
+    const fontSize = 13;
+    let drops: number[] = [];
+    let colors = ['#00E5FF', '#8B5CF6', '#B8FF5C'];
+    let currentColorIndex = 0;
+
+    function resizeMatrix() {
+      if (!mCanvas) return;
+      mCanvas.width = mCanvas.parentElement?.clientWidth || 400;
+      mCanvas.height = mCanvas.parentElement?.clientHeight || 220;
+      const columns = Math.floor(mCanvas.width / fontSize);
+      drops = [];
+      for (let i = 0; i < columns; i++) {
+        drops[i] = Math.floor(Math.random() * -50);
+      }
+    }
+    window.addEventListener('resize', resizeMatrix);
+    resizeMatrix();
+
+    function drawMatrix() {
+      if (!mCtx || !mCanvas) return;
+      mCtx.fillStyle = 'rgba(7, 9, 17, 0.12)';
+      mCtx.fillRect(0, 0, mCanvas.width, mCanvas.height);
+
+      mCtx.fillStyle = colors[currentColorIndex];
+      mCtx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = letters.charAt(Math.floor(Math.random() * letters.length));
+        mCtx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > mCanvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    const interval = setInterval(drawMatrix, 40);
+
+    colorToggle?.addEventListener('click', () => {
+      currentColorIndex = (currentColorIndex + 1) % colors.length;
+    });
+  }
+
+  // SLUG & WORD ANALYZER TOOL
+  const slugInput = document.getElementById('slug-input') as HTMLInputElement;
+  const slugOutput = document.getElementById('slug-output');
+  const wordCount = document.getElementById('word-count');
+  const charCount = document.getElementById('char-count');
+  const copySlugBtn = document.getElementById('copy-slug-btn');
+
+  function toSlug(str: string): string {
+    return str
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[đĐ]/g, 'd')
+      .replace(/([^0-9a-z-\s])/g, '')
+      .replace(/(\s+)/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function updateSlug() {
+    const val = slugInput?.value.trim() || 'Xây dựng Portfolio Cá nhân với Astro và GitHub Pages';
+    const slug = toSlug(val);
+    if (slugOutput) slugOutput.textContent = slug;
+    if (wordCount) wordCount.textContent = String(val.split(/\s+/).filter(Boolean).length);
+    if (charCount) charCount.textContent = String(val.length);
+  }
+
+  if (slugInput) {
+    slugInput.addEventListener('input', updateSlug);
+    updateSlug();
+  }
+
+  if (copySlugBtn && slugOutput) {
+    copySlugBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(slugOutput.textContent || '');
+        copySlugBtn.textContent = 'Đã chép Slug!';
+        setTimeout(() => {
+          copySlugBtn.textContent = 'Chép Slug vào Clipboard';
+        }, 2000);
+      } catch (e) {
+        console.error(e);
+      }
+    });
+  }
+</script>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="200" y2="200" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B0D16"/>
+      <stop offset="1" stop-color="#151A2E"/>
+    </linearGradient>
+    <linearGradient id="cyberGlow" x1="40" y1="40" x2="160" y2="160" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00E5FF"/>
+      <stop offset="0.5" stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#B8FF5C"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="200" height="200" rx="32" fill="url(#bgGrad)"/>
+  <rect x="2" y="2" width="196" height="196" rx="30" stroke="url(#cyberGlow)" stroke-width="2" stroke-opacity="0.4"/>
+  
+  <!-- Cyber Grid Lines -->
+  <path d="M0 50H200M0 100H200M0 150H200M50 0V200M100 0V200M150 0V200" stroke="#1F263B" stroke-width="1" stroke-dasharray="2 4"/>
+  
+  <!-- Center Glow Orb -->
+  <circle cx="100" cy="90" r="45" fill="#8B5CF6" fill-opacity="0.15" filter="url(#glow)"/>
+  
+  <!-- Headphone Silhouette (Music/Hip-hop Vibe) -->
+  <path d="M60 90C60 67.9086 77.9086 50 100 50C122.091 50 140 67.9086 140 90" stroke="#00E5FF" stroke-width="5" stroke-linecap="round"/>
+  <rect x="52" y="85" width="16" height="30" rx="8" fill="#111522" stroke="#00E5FF" stroke-width="3"/>
+  <rect x="132" y="85" width="16" height="30" rx="8" fill="#111522" stroke="#00E5FF" stroke-width="3"/>
+  
+  <!-- Cyber Visor / Face Shape -->
+  <path d="M72 90C72 75 84 66 100 66C116 66 128 75 128 90V114C128 126 116 136 100 136C84 136 72 126 72 114V90Z" fill="#111522" stroke="#8B5CF6" stroke-width="3"/>
+  
+  <!-- Neon Visor Glasses -->
+  <path d="M78 94H122" stroke="#00E5FF" stroke-width="6" stroke-linecap="round" filter="url(#glow)"/>
+  
+  <!-- Audio Waveform on Visor -->
+  <path d="M84 94L88 88L92 98L96 90L100 100L104 92L108 96L112 91L116 94" stroke="#B8FF5C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Hoodie / Shoulders -->
+  <path d="M40 185C40 155 65 145 100 145C135 145 160 155 160 185" stroke="#1F263B" stroke-width="4" stroke-linecap="round"/>
+  <path d="M70 185L85 150M130 185L115 150" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="3 3"/>
+  
+  <!-- Status Indicator -->
+  <circle cx="160" cy="40" r="5" fill="#B8FF5C"/>
+  <circle cx="160" cy="40" r="10" stroke="#B8FF5C" stroke-width="1.5" stroke-opacity="0.4"/>
+</svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0B0D16"/>
+      <stop offset="1" stop-color="#14192B"/>
+    </linearGradient>
+    <linearGradient id="accentG" x1="0" y1="0" x2="800" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#00E5FF"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g1)"/>
+  <rect x="1" y="1" width="798" height="448" stroke="#1F263B" stroke-width="2"/>
+  
+  <!-- Cyber Grid -->
+  <path d="M0 75H800M0 150H800M0 225H800M0 300H800M0 375H800M100 0V450M200 0V450M300 0V450M400 0V450M500 0V450M600 0V450M700 0V450" stroke="#1F263B" stroke-width="1" stroke-opacity="0.5"/>
+  
+  <!-- Center Card Mockup -->
+  <rect x="180" y="90" width="440" height="270" rx="12" fill="#111522" stroke="url(#accentG)" stroke-width="2"/>
+  <rect x="210" y="125" width="180" height="18" rx="4" fill="#00E5FF" fill-opacity="0.8"/>
+  <rect x="210" y="155" width="380" height="10" rx="2" fill="#64748B" fill-opacity="0.4"/>
+  <rect x="210" y="175" width="320" height="10" rx="2" fill="#64748B" fill-opacity="0.4"/>
+  
+  <!-- Club / Performing Arts Stage Silhouette -->
+  <rect x="210" y="210" width="115" height="110" rx="8" fill="#161C2E" stroke="#8B5CF6" stroke-width="1.5"/>
+  <rect x="340" y="210" width="115" height="110" rx="8" fill="#161C2E" stroke="#00E5FF" stroke-width="1.5"/>
+  <rect x="470" y="210" width="120" height="110" rx="8" fill="#161C2E" stroke="#B8FF5C" stroke-width="1.5"/>
+  
+  <!-- Icons / Notes inside blocks -->
+  <circle cx="267" cy="255" r="14" fill="#8B5CF6" fill-opacity="0.3"/>
+  <path d="M263 262V248L274 245V259" stroke="#8B5CF6" stroke-width="2"/>
+  <circle cx="397" cy="255" r="14" fill="#00E5FF" fill-opacity="0.3"/>
+  <path d="M392 255L396 259L403 250" stroke="#00E5FF" stroke-width="2"/>
+  <circle cx="530" cy="255" r="14" fill="#B8FF5C" fill-opacity="0.3"/>
+  <path d="M524 255H536M530 249V261" stroke="#B8FF5C" stroke-width="2"/>
+
+  <!-- Badge -->
+  <rect x="630" y="40" width="130" height="30" rx="6" fill="#111522" stroke="#00E5FF" stroke-width="1"/>
+  <text x="695" y="60" fill="#00E5FF" font-family="monospace" font-size="12" text-anchor="middle">WEB / .NET</text>
+  
+  <!-- Title text overlay -->
+  <text x="400" y="410" fill="#F4F6FC" font-family="'Space Grotesk', sans-serif" font-size="22" font-weight="bold" text-anchor="middle">CLB VĂN NGHỆ MANAGEMENT SYSTEM</text>
+</svg>

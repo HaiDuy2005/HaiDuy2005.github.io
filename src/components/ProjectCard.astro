@@ -1,0 +1,159 @@
+---
+import Tag from './Tag.astro';
+
+interface Props {
+  project: {
+    id: string;
+    data: {
+      title: string;
+      description: string;
+      category: 'Web' | 'Cloud' | 'AI' | 'Other';
+      tags: string[];
+      thumbnail?: string;
+      problem: string;
+      role: string;
+      githubUrl?: string;
+      demoUrl?: string;
+      status: 'Completed' | 'In Progress' | 'Archived';
+      featured?: boolean;
+    };
+  };
+}
+
+const { project } = Astro.props;
+const { data, id } = project;
+
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const detailUrl = `${baseUrl}/projects/${id}`;
+
+const statusConfig = {
+  Completed: { color: 'text-emerald-400 border-emerald-500/40 bg-emerald-950/30', label: 'Completed' },
+  'In Progress': { color: 'text-amber-400 border-amber-500/40 bg-amber-950/30', label: 'In Progress' },
+  Archived: { color: 'text-gray-400 border-gray-600/40 bg-gray-900/40', label: 'Archived' },
+};
+
+const categoryGradients = {
+  Web: 'from-cyan-500/20 to-blue-500/5',
+  Cloud: 'from-purple-500/20 to-indigo-500/5',
+  AI: 'from-emerald-500/20 to-cyan-500/5',
+  Other: 'from-gray-500/20 to-slate-500/5',
+};
+---
+
+<article class="group relative flex flex-col rounded-xl bg-[#111522]/90 border border-[#1F263B] hover:border-cyan-500/50 hover:shadow-[0_10px_30px_-10px_rgba(0,229,255,0.2)] transition-all duration-300 overflow-hidden">
+  
+  <!-- Thumbnail & Overlay -->
+  <div class="relative w-full aspect-[16/9] overflow-hidden bg-[#0A0D17] border-b border-[#1F263B]">
+    {data.thumbnail ? (
+      <img 
+        src={data.thumbnail} 
+        alt={data.title}
+        loading="lazy"
+        class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+      />
+    ) : (
+      <div class:list={["w-full h-full flex items-center justify-center bg-gradient-to-br", categoryGradients[data.category]]}>
+        <span class="font-mono text-cyan-400/50 text-3xl font-bold tracking-widest">{data.category}</span>
+      </div>
+    )}
+
+    <!-- Category & Status Floating Badges -->
+    <div class="absolute top-3 left-3 flex items-center gap-2">
+      <span class="px-2.5 py-1 rounded-md text-[11px] font-mono font-bold uppercase tracking-wider bg-[#080A12]/85 backdrop-blur-md border border-cyan-500/40 text-cyan-300 shadow">
+        {data.category}
+      </span>
+      <span class:list={["px-2 py-0.5 rounded text-[10px] font-mono border backdrop-blur-md", statusConfig[data.status].color]}>
+        ● {statusConfig[data.status].label}
+      </span>
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <div class="flex-1 p-5 sm:p-6 flex flex-col justify-between space-y-4">
+    
+    <div>
+      <h3 class="text-xl font-heading font-bold text-white group-hover:text-cyan-300 transition-colors">
+        <a href={detailUrl} class="focus:outline-none">
+          <span class="absolute inset-0 z-0 pointer-events-none"></span>
+          {data.title}
+        </a>
+      </h3>
+
+      <p class="mt-2 text-sm text-gray-400 line-clamp-2 leading-relaxed">
+        {data.description}
+      </p>
+
+      <!-- Key Insights: Problem & Role -->
+      <div class="mt-4 pt-3 border-t border-[#1F263B]/70 space-y-2 text-xs">
+        <div class="flex items-start gap-2">
+          <span class="text-cyan-400 font-mono font-semibold shrink-0">Problem:</span>
+          <span class="text-gray-300 line-clamp-1">{data.problem}</span>
+        </div>
+        <div class="flex items-start gap-2">
+          <span class="text-purple-400 font-mono font-semibold shrink-0">Role:</span>
+          <span class="text-gray-300">{data.role}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tags & Links Footer -->
+    <div class="space-y-4 pt-2">
+      <!-- Tags List -->
+      <div class="flex flex-wrap gap-1.5">
+        {data.tags.slice(0, 4).map((tag) => (
+          <Tag text={tag} size="sm" />
+        ))}
+      </div>
+
+      <!-- Action Links -->
+      <div class="pt-3 border-t border-[#1F263B] flex items-center justify-between z-10 relative">
+        <a 
+          href={detailUrl}
+          class="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1.5 font-semibold group/btn"
+        >
+          <span>Chi tiết đồ án</span>
+          <span class="group-hover/btn:translate-x-1 transition-transform">→</span>
+        </a>
+
+        <div class="flex items-center gap-2">
+          {data.githubUrl ? (
+            <a 
+              href={data.githubUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="GitHub Repository"
+              class="p-1.5 rounded-lg bg-[#161C2E] border border-[#1F263B] text-gray-300 hover:text-white hover:border-gray-500 transition-colors"
+            >
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" />
+              </svg>
+            </a>
+          ) : (
+            <span class="text-[10px] font-mono text-gray-500 px-2 py-0.5 rounded bg-[#161C2E]/60 border border-[#1F263B]/60">
+              Repo Private
+            </span>
+          )}
+
+          {data.demoUrl ? (
+            <a 
+              href={data.demoUrl} 
+              target="_blank" 
+              rel="noopener noreferrer"
+              aria-label="Live Demo"
+              class="p-1.5 rounded-lg bg-[#161C2E] border border-cyan-500/40 text-cyan-400 hover:text-white hover:bg-cyan-500/20 transition-colors"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          ) : (
+            <span class="text-[10px] font-mono text-gray-500 px-2 py-0.5 rounded bg-[#161C2E]/60 border border-[#1F263B]/60">
+              Demo Soon
+            </span>
+          )}
+        </div>
+      </div>
+    </div>
+
+  </div>
+</article>

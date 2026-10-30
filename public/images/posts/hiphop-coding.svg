@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="gMusic" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#090B14"/>
+      <stop offset="1" stop-color="#1B122A"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#gMusic)"/>
+  <rect x="2" y="2" width="1196" height="626" stroke="#1F263B" stroke-width="2"/>
+  
+  <!-- Waveform Graphic -->
+  <g fill="#8B5CF6" fill-opacity="0.25">
+    <rect x="120" y="200" width="12" height="120" rx="6"/>
+    <rect x="145" y="160" width="12" height="200" rx="6"/>
+    <rect x="170" y="140" width="12" height="240" rx="6" fill="#00E5FF" fill-opacity="0.4"/>
+    <rect x="195" y="190" width="12" height="140" rx="6"/>
+    <rect x="220" y="110" width="12" height="300" rx="6" fill="#B8FF5C" fill-opacity="0.5"/>
+    <rect x="245" y="150" width="12" height="220" rx="6"/>
+    <rect x="270" y="220" width="12" height="80" rx="6"/>
+  </g>
+
+  <!-- Category Pill -->
+  <rect x="340" y="160" width="160" height="42" rx="21" fill="#111522" stroke="#B8FF5C" stroke-width="1.5"/>
+  <text x="420" y="187" fill="#B8FF5C" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="bold" text-anchor="middle">HIP-HOP & FLOW</text>
+
+  <text x="340" y="280" fill="#F4F6FC" font-family="'Space Grotesk', sans-serif" font-size="52" font-weight="900">Code & Rhyme: Khi IT gặp Hip-hop</text>
+  <text x="340" y="340" fill="#9AA4B8" font-family="'Inter', sans-serif" font-size="26">Nhịp điệu tư duy giữa lập trình logic và viết lời Rap</text>
+
+  <line x1="120" y1="480" x2="1080" y2="480" stroke="#1F263B" stroke-width="2"/>
+  <text x="120" y="530" fill="#64748B" font-family="'JetBrains Mono', monospace" font-size="18">CREATIVITY • RHYTHM • SYNTAX</text>
+  <text x="1080" y="530" fill="#8B5CF6" font-family="'JetBrains Mono', monospace" font-size="18" text-anchor="end">DUYVERSE STUDIO</text>
+</svg>

@@ -1,0 +1,197 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import TableOfContents from '../components/TableOfContents.astro';
+import Tag from '../components/Tag.astro';
+import { formatDate, getReadingTime } from '../utils/readingTime';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  updatedDate?: Date;
+  author: string;
+  category: string;
+  tags: string[];
+  cover?: string;
+  headings: { depth: number; slug: string; text: string }[];
+  rawBody?: string;
+}
+
+const {
+  title,
+  description,
+  pubDate,
+  author,
+  category,
+  tags,
+  cover,
+  headings,
+  rawBody,
+} = Astro.props;
+
+const readingTime = getReadingTime(rawBody);
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+const postsUrl = `${baseUrl}/posts`;
+---
+
+<BaseLayout title={title} description={description} image={cover} article={true}>
+  
+  <!-- Reading Progress Indicator Bar -->
+  <div id="read-progress" class="fixed top-16 sm:top-20 left-0 h-1 bg-gradient-to-r from-cyan-400 via-purple-500 to-emerald-400 z-40 w-0 transition-all duration-75"></div>
+
+  <article class="max-w-5xl mx-auto">
+    
+    <!-- Top Back Navigation -->
+    <div class="mb-8 flex items-center justify-between">
+      <a 
+        href={postsUrl}
+        class="inline-flex items-center gap-2 text-xs font-mono text-cyan-400 hover:text-cyan-300 transition-colors"
+      >
+        <span>←</span>
+        <span>TRỞ VỀ DANH SÁCH BÀI VIẾT</span>
+      </a>
+
+      <!-- Category Pill -->
+      <span class="px-3 py-1 rounded-md text-xs font-mono font-bold uppercase tracking-wider bg-purple-950/40 border border-purple-500/40 text-purple-300">
+        {category}
+      </span>
+    </div>
+
+    <!-- Article Header -->
+    <header class="mb-10 space-y-4">
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-heading font-black text-white leading-tight">
+        {title}
+      </h1>
+
+      <p class="text-lg text-gray-300 font-sans leading-relaxed">
+        {description}
+      </p>
+
+      <!-- Metadata Row -->
+      <div class="flex flex-wrap items-center gap-4 pt-2 border-t border-[#1F263B] text-xs font-mono text-gray-400">
+        <div class="flex items-center gap-1.5 text-gray-300">
+          <span class="text-cyan-400">AUTHOR:</span>
+          <span>{author}</span>
+        </div>
+        <span>•</span>
+        <div>
+          <span>NGÀY ĐĂNG:</span> <span class="text-white">{formatDate(pubDate)}</span>
+        </div>
+        <span>•</span>
+        <div class="text-emerald-400">
+          {readingTime}
+        </div>
+      </div>
+
+      <!-- Tags -->
+      <div class="flex flex-wrap gap-2 pt-2">
+        {tags.map((tag) => (
+          <Tag text={tag} variant="purple" size="md" />
+        ))}
+      </div>
+    </header>
+
+    <!-- Cover Image -->
+    {cover && (
+      <div class="mb-12 rounded-xl overflow-hidden border border-[#1F263B] bg-[#0A0D17] aspect-[21/9] shadow-2xl">
+        <img 
+          src={cover} 
+          alt={title} 
+          class="w-full h-full object-cover"
+        />
+      </div>
+    )}
+
+    <!-- Main Content Area: TOC Sidebar + Article Body -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+      
+      <!-- Article Prose Body -->
+      <div class="lg:col-span-8 prose-cyber text-gray-300">
+        <slot />
+
+        <!-- Disclaimer Box for Sample Posts -->
+        <div class="mt-12 p-4 rounded-lg bg-[#111522] border border-cyan-500/30 text-xs font-mono text-gray-400 space-y-1">
+          <div class="text-cyan-400 font-bold">📝 LƯU Ý BÀI VIẾT NỘI DUNG MẪU:</div>
+          <p>
+            Đây là bài viết minh họa cho cấu trúc Markdown Content Collections. Bạn có thể chỉnh sửa nội dung, tiêu đề, ngày đăng hoặc thêm bài mới trong thư mục <code class="text-cyan-300">src/content/posts/</code>.
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Sidebar: TOC & Share -->
+      <aside class="hidden lg:block lg:col-span-4 space-y-6">
+        <div class="sticky top-28 space-y-6">
+          
+          <!-- Table of contents -->
+          <div class="rounded-xl bg-[#111522]/90 border border-[#1F263B] p-5 backdrop-blur-md">
+            <TableOfContents headings={headings} />
+          </div>
+
+          <!-- Share transmission -->
+          <div class="rounded-xl bg-[#111522]/90 border border-[#1F263B] p-5 backdrop-blur-md space-y-3 font-mono text-xs">
+            <div class="text-gray-400 font-bold uppercase tracking-wider">CHIA SẺ BÀI VIẾT</div>
+            <button
+              id="share-article-btn"
+              type="button"
+              class="w-full py-2 px-3 rounded-lg bg-[#161C2E] border border-cyan-500/40 text-cyan-300 hover:text-white hover:bg-cyan-500/20 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+              </svg>
+              <span id="share-btn-text">Sao chép liên kết</span>
+            </button>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="mt-16 pt-8 border-t border-[#1F263B] flex items-center justify-between">
+      <a 
+        href={postsUrl}
+        class="inline-flex items-center gap-2 text-xs font-mono text-cyan-400 hover:text-cyan-300 font-bold"
+      >
+        ← XEM CÁC BÀI VIẾT KHÁC
+      </a>
+      <a 
+        href="#top"
+        class="inline-flex items-center gap-2 text-xs font-mono text-gray-400 hover:text-white"
+      >
+        ↑ ĐẦU TRANG
+      </a>
+    </div>
+
+  </article>
+
+</BaseLayout>
+
+<script>
+  // Reading progress scroll listener
+  const progressBar = document.getElementById('read-progress');
+  if (progressBar) {
+    window.addEventListener('scroll', () => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    });
+  }
+
+  // Copy article URL button
+  const shareBtn = document.getElementById('share-article-btn');
+  const shareText = document.getElementById('share-btn-text');
+  if (shareBtn && shareText) {
+    shareBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        shareText.textContent = 'Đã chép link!';
+        setTimeout(() => {
+          shareText.textContent = 'Sao chép liên kết';
+        }, 2000);
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  }
+</script>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="g2" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#090B14"/>
+      <stop offset="1" stop-color="#1A132F"/>
+    </linearGradient>
+    <linearGradient id="neonPinkCyan" x1="0" y1="0" x2="800" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8B5CF6"/>
+      <stop offset="1" stop-color="#00E5FF"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g2)"/>
+  <rect x="1" y="1" width="798" height="448" stroke="#1F263B" stroke-width="2"/>
+  
+  <!-- Cyber Circuit lines -->
+  <path d="M100 100H250L300 150H500L550 100H700" stroke="#8B5CF6" stroke-width="2" stroke-opacity="0.4"/>
+  <path d="M100 350H320L370 300H450L500 350H700" stroke="#00E5FF" stroke-width="2" stroke-opacity="0.4"/>
+  <circle cx="250" cy="100" r="4" fill="#8B5CF6"/>
+  <circle cx="500" cy="150" r="4" fill="#00E5FF"/>
+  <circle cx="370" cy="300" r="4" fill="#B8FF5C"/>
+
+  <!-- Center Event Portal -->
+  <circle cx="400" cy="225" r="90" fill="#111522" stroke="url(#neonPinkCyan)" stroke-width="3"/>
+  <circle cx="400" cy="225" r="115" stroke="#00E5FF" stroke-width="1" stroke-dasharray="4 8" stroke-opacity="0.5"/>
+  
+  <text x="400" y="215" fill="#00E5FF" font-family="'Space Grotesk', sans-serif" font-size="28" font-weight="900" text-anchor="middle" letter-spacing="2">TECHFEST</text>
+  <text x="400" y="245" fill="#8B5CF6" font-family="'JetBrains Mono', monospace" font-size="14" font-weight="bold" text-anchor="middle">FACULTY OF IT EVENT</text>
+
+  <!-- Tag -->
+  <rect x="630" y="40" width="130" height="30" rx="6" fill="#111522" stroke="#8B5CF6" stroke-width="1"/>
+  <text x="695" y="60" fill="#8B5CF6" font-family="monospace" font-size="12" text-anchor="middle">WEB / EVENT</text>
+
+  <!-- Title footer -->
+  <text x="400" y="410" fill="#F4F6FC" font-family="'Space Grotesk', sans-serif" font-size="22" font-weight="bold" text-anchor="middle">IT TECHFEST EVENT PORTAL</text>
+</svg>

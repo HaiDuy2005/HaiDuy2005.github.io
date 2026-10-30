@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="gCloud" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#080A12"/>
+      <stop offset="1" stop-color="#141E28"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#gCloud)"/>
+  <rect x="2" y="2" width="1196" height="626" stroke="#1F263B" stroke-width="2"/>
+  
+  <path d="M0 150H1200M0 300H1200M0 450H1200M300 0V630M600 0V630M900 0V630" stroke="#1F263B" stroke-width="1" stroke-opacity="0.4"/>
+  
+  <!-- Category Pill -->
+  <rect x="120" y="160" width="160" height="42" rx="21" fill="#111522" stroke="#8B5CF6" stroke-width="1.5"/>
+  <text x="200" y="187" fill="#8B5CF6" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="bold" text-anchor="middle">CLOUD & WEB</text>
+
+  <text x="120" y="290" fill="#F4F6FC" font-family="'Space Grotesk', sans-serif" font-size="56" font-weight="900">Astro & Cloud Deployment</text>
+  <text x="120" y="360" fill="#9AA4B8" font-family="'Inter', sans-serif" font-size="28">Tối ưu hiệu năng website tĩnh và tự động hóa với CI/CD</text>
+
+  <line x1="120" y1="480" x2="1080" y2="480" stroke="#1F263B" stroke-width="2"/>
+  <text x="120" y="530" fill="#64748B" font-family="'JetBrains Mono', monospace" font-size="18">CI/CD • GITHUB ACTIONS • ZERO RUNTIME</text>
+  <text x="1080" y="530" fill="#00E5FF" font-family="'JetBrains Mono', monospace" font-size="18" text-anchor="end">ASTRO 5+ ARCHITECTURE</text>
+</svg>

@@ -1,0 +1,171 @@
+---
+import { siteConfig } from '../data/siteConfig';
+
+const { musicMood } = siteConfig;
+---
+
+<div class="rounded-xl bg-[#111522]/80 border border-[#1F263B] p-5 backdrop-blur-md relative overflow-hidden group hover:border-cyan-500/40 transition-colors">
+  <!-- Subtle glowing backdrop orb -->
+  <div class="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-cyan-500/10 blur-2xl pointer-events-none"></div>
+
+  <div class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest">NOW PLAYING // AUDIO MOOD</span>
+    </div>
+    <span class="text-[11px] font-mono text-gray-500">{musicMood.currentVibe}</span>
+  </div>
+
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <!-- Track Metadata -->
+    <div class="flex items-center gap-3.5">
+      <div class="w-12 h-12 rounded-lg bg-[#161C2E] border border-cyan-500/30 flex items-center justify-center shrink-0 shadow-inner">
+        <svg class="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+        </svg>
+      </div>
+      <div>
+        <h4 class="text-sm font-heading font-bold text-white tracking-wide">
+          {musicMood.featuredTrack.title}
+        </h4>
+        <p class="text-xs font-mono text-gray-400">
+          {musicMood.featuredTrack.artist}
+        </p>
+      </div>
+    </div>
+
+    <!-- Interactive Audio Play Controller -->
+    <div class="flex items-center gap-4">
+      
+      <!-- Audio wave animation bars (active when playing) -->
+      <div id="equalizer-bars" class="flex items-end gap-1 h-6 px-2 opacity-50 transition-opacity">
+        <div class="w-1 bg-cyan-400 rounded-full h-2 transition-all duration-200"></div>
+        <div class="w-1 bg-purple-400 rounded-full h-4 transition-all duration-200"></div>
+        <div class="w-1 bg-emerald-400 rounded-full h-1.5 transition-all duration-200"></div>
+        <div class="w-1 bg-cyan-400 rounded-full h-5 transition-all duration-200"></div>
+        <div class="w-1 bg-purple-400 rounded-full h-3 transition-all duration-200"></div>
+      </div>
+
+      <!-- Play / Pause Synth Button -->
+      <button 
+        id="synth-play-btn"
+        type="button"
+        aria-label="Play chill synthesizer loop"
+        class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#161C2E] border border-cyan-500/40 text-cyan-300 hover:text-white hover:bg-cyan-500/20 text-xs font-mono font-semibold transition-all duration-150 cursor-pointer shadow-[0_0_15px_rgba(0,229,255,0.15)]"
+      >
+        <svg id="play-icon" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <svg id="pause-icon" class="w-3.5 h-3.5 hidden" fill="currentColor" viewBox="0 0 24 24">
+          <rect x="6" y="4" width="4" height="16"></rect>
+          <rect x="14" y="4" width="4" height="16"></rect>
+        </svg>
+        <span id="synth-btn-text">PLAY VIBE</span>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Music Quote -->
+  <p class="mt-3 pt-3 border-t border-[#1F263B]/60 text-xs text-gray-400 italic font-sans">
+    {musicMood.featuredTrack.quote}
+  </p>
+</div>
+
+<script>
+  // Web Audio API Synthesizer: plays a calm cyber lo-fi chord progression on demand
+  let audioCtx: AudioContext | null = null;
+  let isPlaying = false;
+  let timerId: any = null;
+
+  const playBtn = document.getElementById('synth-play-btn');
+  const playIcon = document.getElementById('play-icon');
+  const pauseIcon = document.getElementById('pause-icon');
+  const btnText = document.getElementById('synth-btn-text');
+  const eqBars = document.getElementById('equalizer-bars');
+
+  // Lo-Fi Cyber Chord Frequencies (F minor 7, Db major 7, Ab major, Eb)
+  const chords = [
+    [174.61, 207.65, 261.63, 311.13], // F3, G#3, C4, D#4
+    [138.59, 174.61, 207.65, 261.63], // C#3, F3, G#3, C4
+    [207.65, 261.63, 311.13, 415.30], // G#3, C4, D#4, G#4
+    [155.56, 196.00, 233.08, 311.13], // D#3, G3, A#3, D#4
+  ];
+
+  let currentChordIndex = 0;
+
+  function playLoFiNote(freq: number, duration: number, delay: number) {
+    if (!audioCtx) return;
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    const filter = audioCtx.createBiquadFilter();
+
+    // Warm low-pass filter characteristic of vintage lo-fi hip-hop
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(650, audioCtx.currentTime);
+
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
+
+    gain.gain.setValueAtTime(0.0001, audioCtx.currentTime + delay);
+    gain.gain.exponentialRampToValueAtTime(0.03, audioCtx.currentTime + delay + 0.1);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + delay + duration);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start(audioCtx.currentTime + delay);
+    osc.stop(audioCtx.currentTime + delay + duration);
+  }
+
+  function loopPattern() {
+    if (!isPlaying || !audioCtx) return;
+    const chord = chords[currentChordIndex];
+    currentChordIndex = (currentChordIndex + 1) % chords.length;
+
+    chord.forEach((freq, i) => {
+      playLoFiNote(freq, 2.4, i * 0.08);
+    });
+
+    // Animate eq bars
+    if (eqBars) {
+      const bars = eqBars.children;
+      for (let i = 0; i < bars.length; i++) {
+        const height = Math.floor(Math.random() * 20 + 6) + 'px';
+        (bars[i] as HTMLElement).style.height = height;
+      }
+    }
+
+    timerId = setTimeout(loopPattern, 1800);
+  }
+
+  if (playBtn) {
+    playBtn.addEventListener('click', () => {
+      if (!isPlaying) {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
+          audioCtx = new AudioContextClass();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        isPlaying = true;
+        playIcon?.classList.add('hidden');
+        pauseIcon?.classList.remove('hidden');
+        if (btnText) btnText.textContent = 'STOP';
+        eqBars?.classList.remove('opacity-50');
+        eqBars?.classList.add('opacity-100');
+        loopPattern();
+      } else {
+        isPlaying = false;
+        clearTimeout(timerId);
+        playIcon?.classList.remove('hidden');
+        pauseIcon?.classList.add('hidden');
+        if (btnText) btnText.textContent = 'PLAY VIBE';
+        eqBars?.classList.remove('opacity-100');
+        eqBars?.classList.add('opacity-50');
+      }
+    });
+  }
+</script>

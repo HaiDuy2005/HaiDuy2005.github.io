@@ -1,0 +1,154 @@
+---
+import { siteConfig } from '../data/siteConfig';
+
+const currentPath = Astro.url.pathname;
+const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+function formatHref(href: string) {
+  if (href === '/') return `${baseUrl}/` || '/';
+  return `${baseUrl}${href}`;
+}
+
+function isActive(href: string) {
+  const target = formatHref(href);
+  if (href === '/') {
+    return currentPath === target || currentPath === `${target}/` || currentPath === '/';
+  }
+  return currentPath.startsWith(target);
+}
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-[#1F263B]/80 bg-[#080A12]/85 backdrop-blur-xl transition-all duration-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 sm:h-20">
+      
+      <!-- Brand Logo -->
+      <a href={formatHref('/')} class="flex items-center gap-3 group focus:outline-none">
+        <div class="relative w-9 h-9 rounded-lg bg-[#111522] border border-cyan-500/40 flex items-center justify-center overflow-hidden group-hover:border-cyan-400 group-hover:shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-all">
+          <span class="font-mono text-cyan-400 font-bold text-lg">D</span>
+          <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-purple-500/10 pointer-events-none"></div>
+        </div>
+        <div class="flex flex-col">
+          <span class="font-heading font-black tracking-wider text-base sm:text-lg text-white group-hover:text-cyan-400 transition-colors">
+            DUY<span class="text-purple-400">VERSE</span>
+          </span>
+          <span class="font-mono text-[10px] text-gray-400 tracking-widest hidden sm:block">CODE • CREATE • FLOW</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+        {siteConfig.navigation.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <a
+              href={formatHref(item.href)}
+              class:list={[
+                "relative px-3.5 py-1.5 text-xs font-mono tracking-widest uppercase rounded-md transition-all duration-200",
+                active 
+                  ? "text-cyan-300 bg-cyan-950/40 border border-cyan-500/30 shadow-[0_0_12px_rgba(0,229,255,0.15)]" 
+                  : "text-gray-400 hover:text-white hover:bg-white/5"
+              ]}
+            >
+              {item.name}
+              {active && (
+                <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-cyan-400 rounded-full shadow-[0_0_8px_#00E5FF]"></span>
+              )}
+            </a>
+          );
+        })}
+      </nav>
+
+      <!-- Right Action / Status Indicator -->
+      <div class="hidden lg:flex items-center gap-4">
+        <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-[#111522] border border-[#1F263B] text-xs font-mono">
+          <span class="relative flex h-2 w-2">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+          </span>
+          <span class="text-gray-300 text-[11px]">STATUS: <span class="text-emerald-400 font-semibold">ACTIVE</span></span>
+        </div>
+
+        <a 
+          href={formatHref('/contact')} 
+          class="px-4 py-1.5 text-xs font-mono uppercase font-semibold text-[#080A12] bg-gradient-to-r from-cyan-400 to-cyan-300 hover:from-cyan-300 hover:to-white rounded-md transition-all duration-200 shadow-[0_0_15px_rgba(0,229,255,0.25)] hover:shadow-[0_0_20px_rgba(0,229,255,0.5)]"
+        >
+          CONNECT
+        </a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <div class="flex md:hidden items-center gap-2">
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-label="Toggle Navigation Menu"
+          aria-expanded="false"
+          class="p-2 rounded-lg bg-[#111522] border border-[#1F263B] text-gray-300 hover:text-cyan-400 hover:border-cyan-500/40 focus:outline-none transition-colors"
+        >
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div 
+    id="mobile-drawer" 
+    class="hidden md:hidden border-b border-[#1F263B] bg-[#080A12]/95 backdrop-blur-2xl transition-all duration-300"
+  >
+    <div class="px-4 pt-3 pb-6 space-y-2">
+      {siteConfig.navigation.map((item) => {
+        const active = isActive(item.href);
+        return (
+          <a
+            href={formatHref(item.href)}
+            class:list={[
+              "flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-mono tracking-wider transition-colors",
+              active 
+                ? "text-cyan-300 bg-cyan-950/40 border border-cyan-500/30" 
+                : "text-gray-300 hover:text-white hover:bg-white/5"
+            ]}
+          >
+            <span>{item.name}</span>
+            {active && <span class="text-cyan-400 text-xs">● ACTIVE</span>}
+          </a>
+        );
+      })}
+      
+      <div class="pt-4 mt-2 border-t border-[#1F263B] flex items-center justify-between">
+        <div class="flex items-center gap-2 text-xs font-mono text-gray-400">
+          <span class="h-2 w-2 rounded-full bg-emerald-400 inline-block"></span>
+          <span>READY TO CODE</span>
+        </div>
+        <a 
+          href={formatHref('/contact')}
+          class="px-4 py-1.5 text-xs font-mono text-[#080A12] bg-cyan-400 hover:bg-cyan-300 rounded font-bold"
+        >
+          CONTACT
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const drawer = document.getElementById('mobile-drawer');
+  const hamburger = document.getElementById('hamburger-icon');
+  const close = document.getElementById('close-icon');
+
+  if (btn && drawer && hamburger && close) {
+    btn.addEventListener('click', () => {
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', String(!isExpanded));
+      drawer.classList.toggle('hidden');
+      hamburger.classList.toggle('hidden');
+      close.classList.toggle('hidden');
+    });
+  }
+</script>

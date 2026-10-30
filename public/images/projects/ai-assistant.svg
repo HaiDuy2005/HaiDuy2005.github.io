@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" fill="none">
+  <defs>
+    <linearGradient id="g3" x1="0" y1="0" x2="800" y2="450" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#070913"/>
+      <stop offset="1" stop-color="#0F242C"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="450" fill="url(#g3)"/>
+  <rect x="1" y="1" width="798" height="448" stroke="#1F263B" stroke-width="2"/>
+
+  <!-- Neural Mesh Grid -->
+  <g stroke="#00E5FF" stroke-opacity="0.3" stroke-width="1.5">
+    <line x1="200" y1="150" x2="350" y2="100"/>
+    <line x1="200" y1="150" x2="350" y2="225"/>
+    <line x1="200" y1="300" x2="350" y2="225"/>
+    <line x1="200" y1="300" x2="350" y2="350"/>
+    <line x1="350" y1="100" x2="500" y2="180"/>
+    <line x1="350" y1="225" x2="500" y2="180"/>
+    <line x1="350" y1="225" x2="500" y2="270"/>
+    <line x1="350" y1="350" x2="500" y2="270"/>
+    <line x1="500" y1="180" x2="620" y2="225"/>
+    <line x1="500" y1="270" x2="620" y2="225"/>
+  </g>
+
+  <!-- Neural Nodes -->
+  <circle cx="200" cy="150" r="8" fill="#8B5CF6"/>
+  <circle cx="200" cy="300" r="8" fill="#8B5CF6"/>
+  <circle cx="350" cy="100" r="9" fill="#00E5FF"/>
+  <circle cx="350" cy="225" r="10" fill="#B8FF5C"/>
+  <circle cx="350" cy="350" r="9" fill="#00E5FF"/>
+  <circle cx="500" cy="180" r="10" fill="#8B5CF6"/>
+  <circle cx="500" cy="270" r="10" fill="#00E5FF"/>
+  <circle cx="620" cy="225" r="14" fill="#00E5FF" stroke="#B8FF5C" stroke-width="3"/>
+
+  <!-- Tag -->
+  <rect x="630" y="40" width="130" height="30" rx="6" fill="#111522" stroke="#B8FF5C" stroke-width="1"/>
+  <text x="695" y="60" fill="#B8FF5C" font-family="monospace" font-size="12" text-anchor="middle">AI / LLM</text>
+
+  <!-- Title footer -->
+  <text x="400" y="410" fill="#F4F6FC" font-family="'Space Grotesk', sans-serif" font-size="22" font-weight="bold" text-anchor="middle">CYBER-FLOW AI ASSISTANT</text>
+</svg>
