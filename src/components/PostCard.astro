@@ -24,14 +24,14 @@ const detailUrl = `${baseUrl}/posts/${id}`;
 const readingTime = getReadingTime(body);
 ---
 
-<article class="card group flex flex-col overflow-hidden h-full">
+<article class="card card-interactive group flex flex-col overflow-hidden h-full">
 
   <!-- Cover image -->
   <div class="relative w-full aspect-[2/1] overflow-hidden"
        style="background:var(--bg-raised);border-bottom:1px solid var(--border);">
     {data.cover
       ? <img src={data.cover} alt={data.title} loading="lazy"
-              class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500"/>
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"/>
       : <div class="w-full h-full flex items-center justify-center"
              style="background:linear-gradient(135deg,var(--bg-card) 0%,var(--bg-base) 100%);">
           <span style="font-family:var(--font-mono);color:var(--violet);opacity:0.3;font-size:24px;font-weight:700;">
@@ -58,7 +58,7 @@ const readingTime = getReadingTime(body);
     </div>
 
     <!-- Title -->
-    <h3 class="text-[15px] font-semibold leading-snug line-clamp-2 group-hover:text-[var(--violet)] transition-colors"
+    <h3 class="text-[15px] font-semibold leading-snug line-clamp-2 group-hover:text-[var(--violet)] transition-colors duration-200"
         style="font-family:var(--font-heading);color:var(--text-high);">
       <a href={detailUrl} class="focus:outline-none">
         <span class="absolute inset-0 z-0"></span>
@@ -78,10 +78,11 @@ const readingTime = getReadingTime(body);
         {data.tags.slice(0, 3).map(t => <Tag text={t} variant="violet" />)}
       </div>
       <a href={detailUrl}
-         class="text-[12px] font-mono font-medium flex items-center gap-1 transition-colors z-10 relative shrink-0 ml-2"
+         class="text-[12px] font-mono font-medium flex items-center gap-1 transition-all duration-200 z-10 relative shrink-0 ml-2 group/btn"
          style="color:var(--text-low);"
          onmouseover="this.style.color='var(--violet)'" onmouseout="this.style.color='var(--text-low)'">
-        Đọc <span>→</span>
+        <span>Đọc</span>
+        <span class="group-hover/btn:translate-x-1 transition-transform duration-200">→</span>
       </a>
     </div>
   </div>

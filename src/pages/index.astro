@@ -21,13 +21,13 @@ const latestPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
 <BaseLayout>
 
   <!-- ═══════════════════════════════════════
-       HERO
+       HERO SECTION (Smooth Entrance & Motion)
   ════════════════════════════════════════ -->
   <section class="pt-8 pb-20 sm:pt-16 sm:pb-28">
-    <div class="max-w-2xl space-y-7">
+    <div class="max-w-2xl space-y-7 animate-fade-in-up">
 
-      <!-- Status indicator -->
-      <div class="pill pill-lime inline-flex" style="font-size:11px;">
+      <!-- Status indicator with floating animation -->
+      <div class="pill pill-lime inline-flex animate-float" style="font-size:11px;">
         <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--lime);display:inline-block;"></span>
         Available for internship · 2026
       </div>
@@ -50,46 +50,52 @@ const latestPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
         <strong style="color:var(--text-high);font-weight:500;">Hip-hop</strong>.
       </p>
 
-      <!-- Role line -->
+      <!-- Dynamic Typing / Animated Role line -->
       <div style="font-family:var(--font-mono);font-size:13px;color:var(--text-low);display:flex;align-items:center;gap:8px;">
         <span style="color:var(--violet);">$</span>
         <span>role =</span>
-        <span style="color:var(--text-high);border-bottom:1px solid var(--cyan);padding-bottom:1px;">
-          "IT Student · Developer · AI Explorer"
+        <span id="typewriter-role" style="color:var(--text-high);border-bottom:1px solid var(--cyan);padding-bottom:1px;min-height:20px;">
+          "IT Student · Developer"
         </span>
         <span class="animate-blink" style="color:var(--cyan);font-weight:700;">|</span>
       </div>
 
-      <!-- CTAs -->
+      <!-- Action buttons with shimmer & hover lift -->
       <div class="flex flex-wrap gap-3 pt-2">
-        <a href={h('/projects')} class="btn-primary">Explore Projects</a>
-        <a href={h('/posts')}    class="btn-ghost">Read Posts</a>
-        <a href={h('/contact')}  class="btn-ghost">Contact Me</a>
+        <a href={h('/projects')} class="btn-primary btn-shimmer">
+          Explore Projects
+        </a>
+        <a href={h('/posts')} class="btn-ghost hover:scale-105 active:scale-95 transition-all">
+          Read Posts
+        </a>
+        <a href={h('/contact')} class="btn-ghost hover:scale-105 active:scale-95 transition-all">
+          Contact Me
+        </a>
       </div>
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════
-       QUICK BIO CARDS  (3 columns, minimal)
+       QUICK BIO CARDS (Scroll Reveal)
   ════════════════════════════════════════ -->
   <section class="pb-20">
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
-      <div class="card p-5 space-y-2">
+      <div class="card card-interactive p-5 space-y-2 reveal delay-1">
         <div class="section-label" style="color:var(--cyan);">Web Development</div>
         <p style="font-size:13px;color:var(--text-low);line-height:1.65;">
           Astro, ASP.NET Core, TypeScript — xây dựng web nhanh, chuẩn mực và dễ bảo trì.
         </p>
       </div>
 
-      <div class="card p-5 space-y-2">
+      <div class="card card-interactive p-5 space-y-2 reveal delay-2">
         <div class="section-label" style="color:var(--violet);">Cloud & AI</div>
         <p style="font-size:13px;color:var(--text-low);line-height:1.65;">
           GitHub Actions CI/CD, Docker cơ bản, LLM prompt engineering và RAG pipeline.
         </p>
       </div>
 
-      <div class="card p-5 space-y-2">
+      <div class="card card-interactive p-5 space-y-2 reveal delay-3">
         <div class="section-label" style="color:var(--lime);">Hip-hop & Flow</div>
         <p style="font-size:13px;color:var(--text-low);line-height:1.65;">
           Beatmaking, sáng tác Rap — nhịp điệu âm nhạc làm nguồn cảm hứng tư duy logic.
@@ -100,10 +106,10 @@ const latestPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
   </section>
 
   <!-- ═══════════════════════════════════════
-       FEATURED PROJECTS
+       FEATURED PROJECTS (Scroll Reveal Stagger)
   ════════════════════════════════════════ -->
   <section class="pb-20">
-    <div class="flex items-end justify-between mb-7">
+    <div class="flex items-end justify-between mb-7 reveal">
       <div>
         <p class="section-label mb-1.5">Featured Projects</p>
         <h2 style="font-family:var(--font-heading);font-size:clamp(1.4rem,3vw,1.75rem);font-weight:800;color:var(--text-high);">
@@ -116,15 +122,19 @@ const latestPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      {featuredProjects.map(project => <ProjectCard project={project} />)}
+      {featuredProjects.map((project, idx) => (
+        <div class={`reveal delay-${idx + 1} h-full`}>
+          <ProjectCard project={project} />
+        </div>
+      ))}
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════
-       LATEST POSTS
+       LATEST POSTS (Scroll Reveal Stagger)
   ════════════════════════════════════════ -->
   <section class="pb-20">
-    <div class="flex items-end justify-between mb-7">
+    <div class="flex items-end justify-between mb-7 reveal">
       <div>
         <p class="section-label mb-1.5" style="color:var(--violet);">Latest Posts</p>
         <h2 style="font-family:var(--font-heading);font-size:clamp(1.4rem,3vw,1.75rem);font-weight:800;color:var(--text-high);">
@@ -137,34 +147,38 @@ const latestPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-      {latestPosts.map(post => <PostCard post={post} />)}
+      {latestPosts.map((post, idx) => (
+        <div class={`reveal delay-${idx + 1} h-full`}>
+          <PostCard post={post} />
+        </div>
+      ))}
     </div>
   </section>
 
   <!-- ═══════════════════════════════════════
-       MUSIC MOOD  +  TECH STACK  (2-col)
+       MUSIC MOOD + TECH STACK (2-col)
   ════════════════════════════════════════ -->
   <section class="pb-8">
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
       <!-- Music Mood Widget -->
-      <div class="lg:col-span-5">
+      <div class="lg:col-span-5 reveal delay-1">
         <p class="section-label mb-3" style="color:var(--lime);">Audio Mood</p>
         <MusicMood />
       </div>
 
       <!-- Tech Stack -->
-      <div class="lg:col-span-7">
+      <div class="lg:col-span-7 reveal delay-2">
         <p class="section-label mb-3" style="color:var(--cyan);">Tech Stack</p>
-        <div class="card p-6">
+        <div class="card card-interactive p-6">
           <div class="grid grid-cols-2 sm:grid-cols-2 gap-x-10 gap-y-6">
-            {siteConfig.skills.slice(0, 4).map(group => (
+            {siteConfig.skills.slice(0, 4).map((group, gIdx) => (
               <div class="space-y-2">
                 <p style="font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--cyan);letter-spacing:0.08em;text-transform:uppercase;">
                   {group.category}
                 </p>
                 <ul class="space-y-1.5">
-                  {group.items.map(item => (
+                  {group.items.map((item, iIdx) => (
                     <li style="font-family:var(--font-mono);font-size:12px;color:var(--text-low);display:flex;align-items:center;gap:7px;">
                       <span style="width:5px;height:5px;border-radius:50%;background:var(--border-hi);display:inline-block;flex-shrink:0;"></span>
                       {item.name}
@@ -181,3 +195,46 @@ const latestPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
   </section>
 
 </BaseLayout>
+
+<script>
+  // Smooth Interactive Typewriter Effect for Hero
+  const roles = [
+    '"IT Student · Frontend Developer"',
+    '"Cloud & DevOps Explorer"',
+    '"AI Prompt & Workflow Builder"',
+    '"Hip-hop Beatmaker & Digital Flow"'
+  ];
+  let roleIdx = 0;
+  let charIdx = 0;
+  let isDeleting = false;
+  const target = document.getElementById('typewriter-role');
+
+  function typeEffect() {
+    if (!target) return;
+    const currentText = roles[roleIdx];
+
+    if (!isDeleting) {
+      target.textContent = currentText.substring(0, charIdx + 1);
+      charIdx++;
+      if (charIdx === currentText.length) {
+        isDeleting = true;
+        setTimeout(typeEffect, 2200); // pause at end of sentence
+        return;
+      }
+    } else {
+      target.textContent = currentText.substring(0, charIdx - 1);
+      charIdx--;
+      if (charIdx === 0) {
+        isDeleting = false;
+        roleIdx = (roleIdx + 1) % roles.length;
+        setTimeout(typeEffect, 400); // pause before next word
+        return;
+      }
+    }
+
+    const speed = isDeleting ? 30 : 65;
+    setTimeout(typeEffect, speed);
+  }
+
+  typeEffect();
+</script>

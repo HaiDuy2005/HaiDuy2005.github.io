@@ -13,7 +13,7 @@ const { author } = siteConfig;
   <div class="max-w-3xl mx-auto space-y-14 py-4">
 
     <!-- Header -->
-    <div class="space-y-2">
+    <div class="space-y-2 animate-fade-in-up">
       <p class="section-label">// Transmission Protocol</p>
       <h1 style="font-family:var(--font-heading);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:900;color:var(--text-high);">
         Kết Nối & Trao Đổi
@@ -27,26 +27,26 @@ const { author } = siteConfig;
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
       <a href={author.github} target="_blank" rel="noopener noreferrer"
-         class="card p-5 space-y-2 group" style="text-decoration:none;display:block;">
+         class="card card-interactive p-5 space-y-2 group reveal delay-1" style="text-decoration:none;display:block;">
         <div class="flex items-center justify-between">
           <span class="section-label" style="color:var(--cyan);">GitHub</span>
-          <span style="color:var(--text-low);font-size:14px;" class="group-hover:translate-x-0.5 transition-transform">↗</span>
+          <span style="color:var(--text-low);font-size:14px;" class="group-hover:translate-x-1 group-hover:text-[var(--cyan)] transition-all">↗</span>
         </div>
         <p style="font-size:13px;color:var(--text-high);font-weight:600;">Code Repositories</p>
         <p style="font-size:12px;color:var(--text-low);">Mã nguồn dự án và đóng góp mã nguồn mở.</p>
       </a>
 
       <a href={author.linkedin} target="_blank" rel="noopener noreferrer"
-         class="card p-5 space-y-2 group" style="text-decoration:none;display:block;">
+         class="card card-interactive p-5 space-y-2 group reveal delay-2" style="text-decoration:none;display:block;">
         <div class="flex items-center justify-between">
           <span class="section-label" style="color:var(--violet);">LinkedIn</span>
-          <span style="color:var(--text-low);font-size:14px;" class="group-hover:translate-x-0.5 transition-transform">↗</span>
+          <span style="color:var(--text-low);font-size:14px;" class="group-hover:translate-x-1 group-hover:text-[var(--violet)] transition-all">↗</span>
         </div>
         <p style="font-size:13px;color:var(--text-high);font-weight:600;">Professional Network</p>
         <p style="font-size:12px;color:var(--text-low);">Kết nối hồ sơ nghề nghiệp và hoạt động chuyên môn.</p>
       </a>
 
-      <div class="card p-5 space-y-2">
+      <div class="card card-interactive p-5 space-y-2 reveal delay-3">
         <div class="flex items-center justify-between">
           <span class="section-label" style="color:var(--lime);">Status</span>
           <span class="w-2 h-2 rounded-full animate-pulse" style="background:var(--lime);"></span>
@@ -58,10 +58,12 @@ const { author } = siteConfig;
     </div>
 
     <!-- Contact form / email section -->
-    <ContactForm />
+    <div class="reveal delay-2">
+      <ContactForm />
+    </div>
 
     <!-- Config hint -->
-    <div class="p-4 rounded-lg" style="background:var(--bg-raised);border:1px solid var(--border);font-family:var(--font-mono);font-size:12px;color:var(--text-low);">
+    <div class="p-4 rounded-lg reveal delay-3" style="background:var(--bg-raised);border:1px solid var(--border);font-family:var(--font-mono);font-size:12px;color:var(--text-low);">
       <span style="color:var(--cyan);font-weight:600;">// Config:</span>
       Cập nhật Email, GitHub, LinkedIn tại <code style="color:var(--cyan);">src/data/siteConfig.ts</code>.
     </div>

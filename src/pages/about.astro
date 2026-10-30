@@ -13,12 +13,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
   <div class="max-w-3xl mx-auto space-y-16 py-4">
 
     <!-- ─── Bio header ─── -->
-    <section class="grid grid-cols-1 sm:grid-cols-12 gap-8 items-center">
+    <section class="grid grid-cols-1 sm:grid-cols-12 gap-8 items-center animate-fade-in-up">
 
       <!-- Avatar -->
       <div class="sm:col-span-4 flex justify-center sm:justify-start">
-        <div class="relative w-44 h-44 rounded-2xl overflow-hidden"
-             style="border:1px solid var(--border-mid);box-shadow:0 0 40px rgba(34,211,238,0.1);">
+        <div class="relative w-44 h-44 rounded-2xl overflow-hidden card-interactive"
+             style="border:1px solid var(--border-mid);box-shadow:0 0 40px rgba(34,211,238,0.15);">
           <img src={author.avatar} alt={author.name} class="w-full h-full object-cover"/>
           <div class="absolute bottom-0 inset-x-0 h-1"
                style="background:linear-gradient(to right,var(--cyan),var(--violet));"></div>
@@ -43,12 +43,12 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
         <!-- Status & CV -->
         <div class="flex flex-wrap gap-3 pt-1">
-          <div class="pill" style="color:var(--lime);border-color:rgba(163,230,53,0.2);background:var(--lime-dim);">
-            <span style="width:6px;height:6px;border-radius:50%;background:var(--lime);display:inline-block;"></span>
+          <div class="pill pill-lime animate-float">
+            <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--lime);display:inline-block;"></span>
             {author.status}
           </div>
           {author.cvUrl
-            ? <a href={author.cvUrl} target="_blank" rel="noopener noreferrer" class="btn-primary" style="padding:7px 18px;font-size:12px;">
+            ? <a href={author.cvUrl} target="_blank" rel="noopener noreferrer" class="btn-primary btn-shimmer" style="padding:7px 18px;font-size:12px;">
                 Tải CV PDF
               </a>
             : <span class="pill">CV đang cập nhật — liên hệ qua Email</span>
@@ -58,7 +58,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ─── 3 Specializations ─── -->
-    <section class="space-y-5">
+    <section class="space-y-5 reveal">
       <div>
         <p class="section-label mb-1">// Roadmap & Vision</p>
         <h2 style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--text-high);">
@@ -71,8 +71,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           { n: '01', label: 'Web Development',  color: 'var(--cyan)',   body: 'Xây dựng ứng dụng web theo Clean Architecture, ưu tiên tốc độ tải, accessibility và UX mượt mà.' },
           { n: '02', label: 'Cloud & DevOps',   color: 'var(--violet)', body: 'CI/CD với GitHub Actions, Docker, kiến trúc microservices và hạ tầng đám mây.' },
           { n: '03', label: 'AI Integration',   color: 'var(--lime)',   body: 'Nhúng LLM, RAG pipeline vào phần mềm thực tế để tăng năng suất và giải quyết bài toán người dùng.' },
-        ].map(spec => (
-          <div class="card p-5 space-y-2">
+        ].map((spec, idx) => (
+          <div class={`card card-interactive p-5 space-y-2 reveal delay-${idx + 1}`}>
             <div class="flex items-baseline gap-2">
               <span style={`font-family:var(--font-mono);font-size:11px;color:${spec.color};font-weight:600;`}>{spec.n}</span>
               <h3 style={`font-family:var(--font-heading);font-size:14px;font-weight:700;color:${spec.color};`}>{spec.label}</h3>
@@ -84,7 +84,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ─── Skills grid ─── -->
-    <section class="space-y-5">
+    <section class="space-y-5 reveal">
       <div>
         <p class="section-label mb-1">// Verified Skills</p>
         <h2 style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--text-high);">
@@ -95,7 +95,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
         </p>
       </div>
 
-      <div class="card p-6">
+      <div class="card card-interactive p-6">
         <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-10 gap-y-8">
           {skills.map(group => (
             <div class="space-y-2.5">
@@ -117,7 +117,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ─── Timeline ─── -->
-    <section class="space-y-5">
+    <section class="space-y-5 reveal">
       <div>
         <p class="section-label mb-1">// Chronology</p>
         <h2 style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--text-high);">
@@ -130,8 +130,8 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
           { year:'2026 — Nay', color:'var(--cyan)',   title:'Portfolio Duyverse & AI Experiments', body:'Phát triển không gian số tĩnh với Astro, nghiên cứu LLM workflows và chuẩn bị ứng tuyển thực tập.' },
           { year:'2025',       color:'var(--violet)', title:'Đồ án Web & Hệ thống Quản lý',        body:'Xây dựng hệ thống quản lý CLB với ASP.NET Core, website sự kiện khoa CNTT.' },
           { year:'2023 - 2024',color:'var(--text-low)',title:'Nền tảng CS & Lập trình',            body:'Cấu trúc dữ liệu, OOP, cơ sở dữ liệu quan hệ, nguyên lý mạng máy tính.' },
-        ].map(evt => (
-          <div class="relative" style="padding-left:16px;">
+        ].map((evt, idx) => (
+          <div class={`relative reveal delay-${idx + 1}`} style="padding-left:16px;">
             <div style={`position:absolute;left:-24px;top:4px;width:8px;height:8px;border-radius:50%;background:${evt.color};box-shadow:0 0 8px ${evt.color};`}></div>
             <p style={`font-family:var(--font-mono);font-size:11px;color:${evt.color};margin-bottom:4px;`}>{evt.year}</p>
             <h3 style="font-family:var(--font-heading);font-size:15px;font-weight:700;color:var(--text-high);margin-bottom:4px;">{evt.title}</h3>
@@ -142,7 +142,7 @@ const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
     </section>
 
     <!-- ─── Music/Creative ─── -->
-    <section class="card p-6 space-y-3">
+    <section class="card card-interactive p-6 space-y-3 reveal">
       <p class="section-label" style="color:var(--violet);">// Creative DNA</p>
       <h2 style="font-family:var(--font-heading);font-size:1.2rem;font-weight:800;color:var(--text-high);">
         Âm Nhạc, Hip-hop & Sáng Tạo
