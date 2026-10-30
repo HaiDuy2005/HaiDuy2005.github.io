@@ -48,9 +48,9 @@ export const siteConfig: SiteConfig = {
     avatar: '/images/avatar/duyverse-avatar.svg',
     location: 'Việt Nam',
     status: 'Open to Internship & Collaborative Projects',
-    email: 'contact@duyverse.dev', // Ghi chú: Người dùng thay bằng email cá nhân thật
-    github: 'https://github.com', // Ghi chú: Người dùng thay bằng URL GitHub profile cá nhân
-    linkedin: 'https://linkedin.com', // Ghi chú: Người dùng thay bằng LinkedIn thật
+    email: 'contact@duyverse.dev', // Ghi chú: Bạn có thể thay bằng email cá nhân của mình
+    github: 'https://github.com/HaiDuy2005',
+    linkedin: 'https://linkedin.com', // Ghi chú: Thay bằng LinkedIn thật của bạn
     facebook: 'https://facebook.com', // Tùy chọn
     cvUrl: '', // Để trống nếu chưa có file CV thật theo nguyên tắc của kế hoạch
   },

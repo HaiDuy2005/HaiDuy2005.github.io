@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // Automatically detect subpath for GitHub Pages if deployed to user.github.io/repo-name
 const base = process.env.BASE_PATH || '/';
-const site = process.env.SITE_URL || 'https://duyverse.github.io';
+const site = process.env.SITE_URL || 'https://haiduy2005.github.io';
 
 export default defineConfig({
   site: site,
