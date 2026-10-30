@@ -1,171 +1,148 @@
 ---
 import { siteConfig } from '../data/siteConfig';
-
 const { musicMood } = siteConfig;
 ---
 
-<div class="rounded-xl bg-[#111522]/80 border border-[#1F263B] p-5 backdrop-blur-md relative overflow-hidden group hover:border-cyan-500/40 transition-colors">
-  <!-- Subtle glowing backdrop orb -->
-  <div class="absolute -right-10 -bottom-10 w-40 h-40 rounded-full bg-cyan-500/10 blur-2xl pointer-events-none"></div>
-
-  <div class="flex items-center justify-between mb-3">
+<div class="card p-5" style="background:var(--bg-raised);">
+  <!-- Header row -->
+  <div class="flex items-center justify-between mb-4">
     <div class="flex items-center gap-2">
-      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-      <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest">NOW PLAYING // AUDIO MOOD</span>
+      <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--lime);"></span>
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-low);letter-spacing:0.08em;">
+        AUDIO MOOD
+      </span>
     </div>
-    <span class="text-[11px] font-mono text-gray-500">{musicMood.currentVibe}</span>
+    <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-low);">
+      {musicMood.currentVibe}
+    </span>
   </div>
 
   <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-    <!-- Track Metadata -->
+
+    <!-- Track info -->
     <div class="flex items-center gap-3.5">
-      <div class="w-12 h-12 rounded-lg bg-[#161C2E] border border-cyan-500/30 flex items-center justify-center shrink-0 shadow-inner">
-        <svg class="w-6 h-6 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
+      <div class="w-11 h-11 rounded-lg flex items-center justify-center shrink-0"
+           style="background:var(--bg-card);border:1px solid var(--border);">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"
+             style="color:var(--cyan);">
+          <path stroke-linecap="round" stroke-linejoin="round"
+                d="M9 19V6l12-3v13M9 19c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2zm12-3c0 1.1-1.34 2-3 2s-3-.9-3-2 1.34-2 3-2 3 .9 3 2z"/>
         </svg>
       </div>
       <div>
-        <h4 class="text-sm font-heading font-bold text-white tracking-wide">
+        <p style="font-family:var(--font-heading);font-size:14px;font-weight:600;color:var(--text-high);">
           {musicMood.featuredTrack.title}
-        </h4>
-        <p class="text-xs font-mono text-gray-400">
+        </p>
+        <p style="font-family:var(--font-mono);font-size:11px;color:var(--text-low);">
           {musicMood.featuredTrack.artist}
         </p>
       </div>
     </div>
 
-    <!-- Interactive Audio Play Controller -->
+    <!-- Visualizer bars + Play button -->
     <div class="flex items-center gap-4">
-      
-      <!-- Audio wave animation bars (active when playing) -->
-      <div id="equalizer-bars" class="flex items-end gap-1 h-6 px-2 opacity-50 transition-opacity">
-        <div class="w-1 bg-cyan-400 rounded-full h-2 transition-all duration-200"></div>
-        <div class="w-1 bg-purple-400 rounded-full h-4 transition-all duration-200"></div>
-        <div class="w-1 bg-emerald-400 rounded-full h-1.5 transition-all duration-200"></div>
-        <div class="w-1 bg-cyan-400 rounded-full h-5 transition-all duration-200"></div>
-        <div class="w-1 bg-purple-400 rounded-full h-3 transition-all duration-200"></div>
+      <!-- EQ bars -->
+      <div id="eq-bars" class="flex items-end gap-0.5 h-6 opacity-40 transition-opacity duration-300"
+           style="transform-origin:bottom;">
+        {[14, 22, 8, 28, 16, 20, 10].map((h, i) => (
+          <div class="w-1.5 rounded-sm"
+               style={`height:${h}px;background:${i % 3 === 0 ? 'var(--cyan)' : i % 3 === 1 ? 'var(--violet)' : 'var(--lime)'};transition:height 0.15s;`}>
+          </div>
+        ))}
       </div>
 
-      <!-- Play / Pause Synth Button -->
-      <button 
-        id="synth-play-btn"
-        type="button"
-        aria-label="Play chill synthesizer loop"
-        class="flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-[#161C2E] border border-cyan-500/40 text-cyan-300 hover:text-white hover:bg-cyan-500/20 text-xs font-mono font-semibold transition-all duration-150 cursor-pointer shadow-[0_0_15px_rgba(0,229,255,0.15)]"
-      >
-        <svg id="play-icon" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      <button id="music-play-btn" type="button" aria-label="Play ambient beat"
+              class="btn-ghost" style="padding:7px 16px;font-size:12px;gap:6px;">
+        <svg id="ico-play" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3"/>
         </svg>
-        <svg id="pause-icon" class="w-3.5 h-3.5 hidden" fill="currentColor" viewBox="0 0 24 24">
-          <rect x="6" y="4" width="4" height="16"></rect>
-          <rect x="14" y="4" width="4" height="16"></rect>
+        <svg id="ico-pause" class="w-3.5 h-3.5 hidden" fill="currentColor" viewBox="0 0 24 24">
+          <rect x="6" y="4" width="4" height="16"/>
+          <rect x="14" y="4" width="4" height="16"/>
         </svg>
-        <span id="synth-btn-text">PLAY VIBE</span>
+        <span id="play-label">Play Vibe</span>
       </button>
-
     </div>
   </div>
 
-  <!-- Music Quote -->
-  <p class="mt-3 pt-3 border-t border-[#1F263B]/60 text-xs text-gray-400 italic font-sans">
+  <!-- Quote -->
+  <p class="mt-4 pt-4 text-[12px] italic leading-relaxed"
+     style="border-top:1px solid var(--border);color:var(--text-low);">
     {musicMood.featuredTrack.quote}
   </p>
 </div>
 
 <script>
-  // Web Audio API Synthesizer: plays a calm cyber lo-fi chord progression on demand
   let audioCtx: AudioContext | null = null;
-  let isPlaying = false;
-  let timerId: any = null;
+  let playing = false;
+  let timer: any;
 
-  const playBtn = document.getElementById('synth-play-btn');
-  const playIcon = document.getElementById('play-icon');
-  const pauseIcon = document.getElementById('pause-icon');
-  const btnText = document.getElementById('synth-btn-text');
-  const eqBars = document.getElementById('equalizer-bars');
+  const btn    = document.getElementById('music-play-btn');
+  const iPlay  = document.getElementById('ico-play');
+  const iPause = document.getElementById('ico-pause');
+  const label  = document.getElementById('play-label');
+  const bars   = document.getElementById('eq-bars')?.children;
 
-  // Lo-Fi Cyber Chord Frequencies (F minor 7, Db major 7, Ab major, Eb)
   const chords = [
-    [174.61, 207.65, 261.63, 311.13], // F3, G#3, C4, D#4
-    [138.59, 174.61, 207.65, 261.63], // C#3, F3, G#3, C4
-    [207.65, 261.63, 311.13, 415.30], // G#3, C4, D#4, G#4
-    [155.56, 196.00, 233.08, 311.13], // D#3, G3, A#3, D#4
+    [174.61, 207.65, 261.63, 311.13],
+    [138.59, 174.61, 207.65, 261.63],
+    [207.65, 261.63, 311.13, 415.30],
+    [155.56, 196.00, 233.08, 311.13],
   ];
+  let ci = 0;
 
-  let currentChordIndex = 0;
-
-  function playLoFiNote(freq: number, duration: number, delay: number) {
+  function playNote(freq: number, delay: number) {
     if (!audioCtx) return;
-    const osc = audioCtx.createOscillator();
+    const osc  = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    const filter = audioCtx.createBiquadFilter();
-
-    // Warm low-pass filter characteristic of vintage lo-fi hip-hop
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(650, audioCtx.currentTime);
-
+    const lpf  = audioCtx.createBiquadFilter();
+    lpf.type = 'lowpass';
+    lpf.frequency.value = 700;
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(freq, audioCtx.currentTime + delay);
-
-    gain.gain.setValueAtTime(0.0001, audioCtx.currentTime + delay);
-    gain.gain.exponentialRampToValueAtTime(0.03, audioCtx.currentTime + delay + 0.1);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + delay + duration);
-
-    osc.connect(filter);
-    filter.connect(gain);
-    gain.connect(audioCtx.destination);
-
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.001, audioCtx.currentTime + delay);
+    gain.gain.exponentialRampToValueAtTime(0.035, audioCtx.currentTime + delay + 0.12);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + delay + 0.9);
+    osc.connect(lpf); lpf.connect(gain); gain.connect(audioCtx.destination);
     osc.start(audioCtx.currentTime + delay);
-    osc.stop(audioCtx.currentTime + delay + duration);
+    osc.stop(audioCtx.currentTime + delay + 1);
   }
 
-  function loopPattern() {
-    if (!isPlaying || !audioCtx) return;
-    const chord = chords[currentChordIndex];
-    currentChordIndex = (currentChordIndex + 1) % chords.length;
-
-    chord.forEach((freq, i) => {
-      playLoFiNote(freq, 2.4, i * 0.08);
-    });
-
-    // Animate eq bars
-    if (eqBars) {
-      const bars = eqBars.children;
-      for (let i = 0; i < bars.length; i++) {
-        const height = Math.floor(Math.random() * 20 + 6) + 'px';
-        (bars[i] as HTMLElement).style.height = height;
-      }
+  function loop() {
+    if (!playing) return;
+    chords[ci].forEach((f, i) => playNote(f, i * 0.07));
+    ci = (ci + 1) % chords.length;
+    if (bars) {
+      Array.from(bars).forEach(b => {
+        (b as HTMLElement).style.height = (Math.random() * 22 + 5) + 'px';
+      });
     }
-
-    timerId = setTimeout(loopPattern, 1800);
+    timer = setTimeout(loop, 1600);
   }
 
-  if (playBtn) {
-    playBtn.addEventListener('click', () => {
-      if (!isPlaying) {
-        if (!audioCtx) {
-          const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
-          audioCtx = new AudioContextClass();
-        }
-        if (audioCtx.state === 'suspended') {
-          audioCtx.resume();
-        }
-        isPlaying = true;
-        playIcon?.classList.add('hidden');
-        pauseIcon?.classList.remove('hidden');
-        if (btnText) btnText.textContent = 'STOP';
-        eqBars?.classList.remove('opacity-50');
-        eqBars?.classList.add('opacity-100');
-        loopPattern();
-      } else {
-        isPlaying = false;
-        clearTimeout(timerId);
-        playIcon?.classList.remove('hidden');
-        pauseIcon?.classList.add('hidden');
-        if (btnText) btnText.textContent = 'PLAY VIBE';
-        eqBars?.classList.remove('opacity-100');
-        eqBars?.classList.add('opacity-50');
+  btn?.addEventListener('click', () => {
+    if (!playing) {
+      if (!audioCtx) {
+        const AC = window.AudioContext || (window as any).webkitAudioContext;
+        audioCtx = new AC();
       }
-    });
-  }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      playing = true;
+      iPlay?.classList.add('hidden');
+      iPause?.classList.remove('hidden');
+      if (label) label.textContent = 'Stop';
+      document.getElementById('eq-bars')?.style.setProperty('opacity', '1');
+      loop();
+    } else {
+      playing = false;
+      clearTimeout(timer);
+      iPlay?.classList.remove('hidden');
+      iPause?.classList.add('hidden');
+      if (label) label.textContent = 'Play Vibe';
+      document.getElementById('eq-bars')?.style.setProperty('opacity', '0.4');
+      if (bars) Array.from(bars).forEach((b, i) => {
+        (b as HTMLElement).style.height = [14,22,8,28,16,20,10][i] + 'px';
+      });
+    }
+  });
 </script>

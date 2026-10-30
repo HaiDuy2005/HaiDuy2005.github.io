@@ -2,28 +2,22 @@
 interface Props {
   headings: { depth: number; slug: string; text: string }[];
 }
-
 const { headings } = Astro.props;
-const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
+const filtered = headings.filter(h => h.depth === 2 || h.depth === 3);
 ---
 
 {filtered.length > 0 && (
-  <nav class="space-y-3 font-mono text-xs">
-    <div class="flex items-center gap-2 pb-2 border-b border-[#1F263B] text-cyan-400 font-bold uppercase tracking-wider">
-      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h7" />
-      </svg>
-      <span>MỤC LỤC BÀI VIẾT</span>
-    </div>
-    <ul class="space-y-1.5 max-h-[70vh] overflow-y-auto pr-2">
-      {filtered.map((heading) => (
-        <li class:list={[heading.depth === 3 ? "pl-3 text-gray-500" : "text-gray-400 font-medium"]}>
-          <a
-            href={`#${heading.slug}`}
-            class="hover:text-cyan-300 transition-colors block py-0.5 toc-link"
-            data-target={heading.slug}
-          >
-            {heading.depth === 3 ? '↳ ' : '• '}{heading.text}
+  <nav>
+    <p class="section-label mb-3">Mục lục</p>
+    <ul class="space-y-1.5" style="font-family:var(--font-mono);font-size:12px;">
+      {filtered.map(h => (
+        <li>
+          <a href={`#${h.slug}`}
+             data-slug={h.slug}
+             class="toc-link block leading-snug transition-colors"
+             style={`color:var(--text-low);padding-left:${h.depth === 3 ? '14px' : '0'};`}
+             onmouseover="this.style.color='var(--text-high)'" onmouseout="this.style.color=this.dataset.active?'var(--cyan)':'var(--text-low)'">
+            {h.depth === 3 ? '↳ ' : ''}{h.text}
           </a>
         </li>
       ))}
@@ -32,28 +26,20 @@ const filtered = headings.filter((h) => h.depth === 2 || h.depth === 3);
 )}
 
 <script>
-  // Dynamic active TOC scroll spy
   const links = document.querySelectorAll<HTMLAnchorElement>('.toc-link');
-  if (links.length > 0) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = entry.target.getAttribute('id');
-            links.forEach((l) => {
-              if (l.getAttribute('data-target') === id) {
-                l.classList.add('text-cyan-400', 'font-bold');
-                l.classList.remove('text-gray-400', 'text-gray-500');
-              } else {
-                l.classList.remove('text-cyan-400', 'font-bold');
-              }
-            });
-          }
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const id = e.target.getAttribute('id');
+        links.forEach(l => {
+          const active = l.dataset.slug === id;
+          l.style.color = active ? 'var(--cyan)' : 'var(--text-low)';
+          if (active) l.dataset.active = '1';
+          else delete l.dataset.active;
         });
-      },
-      { rootMargin: '-80px 0px -60% 0px' }
-    );
+      }
+    });
+  }, { rootMargin: '-72px 0px -60% 0px' });
 
-    document.querySelectorAll('h2[id], h3[id]').forEach((h) => observer.observe(h));
-  }
+  document.querySelectorAll('h2[id],h3[id]').forEach(h => observer.observe(h));
 </script>

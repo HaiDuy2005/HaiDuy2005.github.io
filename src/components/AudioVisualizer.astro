@@ -2,53 +2,59 @@
 // AudioVisualizer.astro - Real-time HTML5 Canvas Audio Visualizer for the Lab
 ---
 
-<div class="rounded-xl bg-[#111522]/90 border border-[#1F263B] p-6 backdrop-blur-md relative overflow-hidden">
-  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
+<div class="card p-5 sm:p-6 space-y-4">
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
     <div>
       <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
-        <h3 class="text-base font-heading font-bold text-white tracking-wide">
-          MUSIC × CODE // AUDIO REACTIVE CANVAS
+        <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--lime);"></span>
+        <h3 style="font-family:var(--font-heading);font-size:15px;font-weight:700;color:var(--text-high);">
+          Audio Spectrum Visualizer
         </h3>
       </div>
-      <p class="text-xs font-mono text-gray-400 mt-1">
-        Web Audio API AnalyserNode • Real-time FFT Frequency Spectrum
+      <p style="font-family:var(--font-mono);font-size:11.5px;color:var(--text-low);margin-top:2px;">
+        Web Audio API AnalyserNode · Phân tích tần số FFT thời gian thực
       </p>
     </div>
 
     <!-- Controls -->
-    <div class="flex items-center gap-3">
-      <button
-        id="lab-audio-toggle"
-        type="button"
-        class="px-4 py-2 rounded-lg bg-[#161C2E] border border-cyan-500/40 text-cyan-300 hover:text-white hover:bg-cyan-500/20 text-xs font-mono font-bold flex items-center gap-2 transition-all cursor-pointer shadow-[0_0_15px_rgba(0,229,255,0.2)]"
-      >
-        <svg id="lab-play-ico" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-          <polygon points="5 3 19 12 5 21 5 3"></polygon>
-        </svg>
-        <svg id="lab-stop-ico" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
-          <rect x="6" y="6" width="12" height="12"></rect>
-        </svg>
-        <span id="lab-audio-status">START BEAT STREAM</span>
-      </button>
-
+    <div class="flex items-center gap-2.5">
       <select
         id="visualizer-style"
-        class="bg-[#161C2E] border border-[#1F263B] text-gray-300 text-xs font-mono rounded-lg px-2.5 py-2 focus:outline-none focus:border-cyan-400 cursor-pointer"
+        class="card"
+        style="padding:6px 12px;font-family:var(--font-mono);font-size:11.5px;color:var(--text-mid);background:var(--bg-raised);border-color:var(--border-mid);cursor:pointer;outline:none;"
       >
         <option value="bars">Spectrum Bars</option>
         <option value="wave">Oscilloscope Wave</option>
         <option value="circle">Cyber Ring</option>
       </select>
+
+      <button
+        id="lab-audio-toggle"
+        type="button"
+        class="btn-primary"
+        style="padding:7px 16px;font-size:12px;gap:6px;"
+      >
+        <svg id="lab-play-ico" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+        </svg>
+        <svg id="lab-stop-ico" class="w-3.5 h-3.5 hidden" fill="currentColor" viewBox="0 0 24 24">
+          <rect x="6" y="6" width="12" height="12"></rect>
+        </svg>
+        <span id="lab-audio-status">Kích hoạt Audio</span>
+      </button>
     </div>
   </div>
 
   <!-- Canvas Visualizer Screen -->
-  <div class="relative w-full aspect-[21/9] min-h-[220px] rounded-lg bg-[#070911] border border-[#1F263B] overflow-hidden flex items-center justify-center">
+  <div class="relative w-full rounded-lg overflow-hidden flex items-center justify-center"
+       style="height:230px;background:var(--bg-base);border:1px solid var(--border);">
     <canvas id="audio-canvas" class="w-full h-full block"></canvas>
-    <div id="canvas-overlay-text" class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none p-4 bg-[#080A12]/60">
-      <span class="text-xs font-mono text-cyan-400 tracking-widest mb-1">SYSTEM IDLE</span>
-      <span class="text-sm font-sans text-gray-400">Nhấn "START BEAT STREAM" để kích hoạt mô phỏng âm thanh & visualizer</span>
+    <div id="canvas-overlay-text" class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none p-4"
+         style="background:rgba(7,9,15,0.7);backdrop-filter:blur(3px);">
+      <span class="pill pill-cyan mb-2" style="font-size:10px;">IDLE MODE</span>
+      <span style="font-size:13px;color:var(--text-mid);max-width:36ch;line-height:1.6;">
+        Nhấn "Kích hoạt Audio" để bắt đầu phát chuỗi âm thanh và xem sóng phân tích
+      </span>
     </div>
   </div>
 </div>
@@ -72,13 +78,13 @@
   function resizeCanvas() {
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * window.devicePixelRatio;
-    canvas.height = rect.height * window.devicePixelRatio;
+    canvas.width = rect.width * (window.devicePixelRatio || 1);
+    canvas.height = rect.height * (window.devicePixelRatio || 1);
   }
   window.addEventListener('resize', resizeCanvas);
   resizeCanvas();
 
-  // Procedural Beat Synth
+  // Procedural Scale
   const scale = [130.81, 146.83, 164.81, 196.00, 220.00, 261.63, 293.66, 329.63, 392.00, 440.00];
   let step = 0;
 
@@ -88,36 +94,34 @@
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
 
-    // Kick drum pulse every 4 steps
     if (step % 4 === 0) {
       const kickOsc = audioCtx.createOscillator();
       const kickGain = audioCtx.createGain();
-      kickOsc.frequency.setValueAtTime(140, audioCtx.currentTime);
-      kickOsc.frequency.exponentialRampToValueAtTime(35, audioCtx.currentTime + 0.18);
-      kickGain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-      kickGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+      kickOsc.frequency.setValueAtTime(130, audioCtx.currentTime);
+      kickOsc.frequency.exponentialRampToValueAtTime(32, audioCtx.currentTime + 0.16);
+      kickGain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+      kickGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.18);
       kickOsc.connect(kickGain);
       kickGain.connect(analyser);
       kickGain.connect(audioCtx.destination);
       kickOsc.start();
-      kickOsc.stop(audioCtx.currentTime + 0.2);
+      kickOsc.stop(audioCtx.currentTime + 0.18);
     }
 
-    // Melodic Synth Note
     const freq = scale[Math.floor(Math.random() * scale.length)];
     osc.type = (step % 2 === 0) ? 'sawtooth' : 'triangle';
     osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
 
     gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.06, audioCtx.currentTime + 0.05);
-    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.4);
+    gain.gain.exponentialRampToValueAtTime(0.04, audioCtx.currentTime + 0.05);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.35);
 
     osc.connect(gain);
     gain.connect(analyser);
     gain.connect(audioCtx.destination);
 
     osc.start();
-    osc.stop(audioCtx.currentTime + 0.45);
+    osc.stop(audioCtx.currentTime + 0.38);
     step++;
   }
 
@@ -133,30 +137,29 @@
 
     if (style === 'bars') {
       analyser.getByteFrequencyData(dataArray);
-      const barCount = 48;
+      const barCount = 44;
       const barWidth = (canvas.width / barCount);
       let x = 0;
 
       for (let i = 0; i < barCount; i++) {
         const val = dataArray[i * 2] || 0;
-        const barHeight = (val / 255) * (canvas.height * 0.85);
+        const barHeight = (val / 255) * (canvas.height * 0.82);
 
-        // Cyber Gradient for bars
         const grad = ctx.createLinearGradient(0, canvas.height, 0, canvas.height - barHeight);
-        grad.addColorStop(0, '#00E5FF');
-        grad.addColorStop(0.5, '#8B5CF6');
-        grad.addColorStop(1, '#B8FF5C');
+        grad.addColorStop(0, '#22d3ee');
+        grad.addColorStop(0.6, '#a78bfa');
+        grad.addColorStop(1, '#a3e635');
 
         ctx.fillStyle = grad;
-        ctx.fillRect(x, canvas.height - barHeight, barWidth - 3, barHeight);
+        ctx.fillRect(x, canvas.height - barHeight, barWidth - 2.5, barHeight);
         x += barWidth;
       }
     } else if (style === 'wave') {
       analyser.getByteTimeDomainData(dataArray);
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = '#00E5FF';
-      ctx.shadowColor = '#00E5FF';
-      ctx.shadowBlur = 10;
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = '#22d3ee';
+      ctx.shadowColor = 'rgba(34,211,238,0.4)';
+      ctx.shadowBlur = 8;
       ctx.beginPath();
 
       const sliceWidth = canvas.width / bufferLength;
@@ -175,24 +178,24 @@
       analyser.getByteFrequencyData(dataArray);
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
-      const baseRadius = Math.min(cx, cy) * 0.4;
-      const points = 64;
+      const baseRadius = Math.min(cx, cy) * 0.42;
+      const points = 56;
 
       ctx.beginPath();
       for (let i = 0; i < points; i++) {
         const angle = (i / points) * Math.PI * 2;
         const val = dataArray[i] || 0;
-        const r = baseRadius + (val / 255) * 60;
+        const r = baseRadius + (val / 255) * 50;
         const x = cx + Math.cos(angle) * r;
         const y = cy + Math.sin(angle) * r;
         if (i === 0) ctx.moveTo(x, y);
         else ctx.lineTo(x, y);
       }
       ctx.closePath();
-      ctx.strokeStyle = '#8B5CF6';
-      ctx.lineWidth = 4;
-      ctx.shadowColor = '#8B5CF6';
-      ctx.shadowBlur = 15;
+      ctx.strokeStyle = '#a78bfa';
+      ctx.lineWidth = 3;
+      ctx.shadowColor = 'rgba(167,139,250,0.4)';
+      ctx.shadowBlur = 10;
       ctx.stroke();
       ctx.shadowBlur = 0;
     }
@@ -214,7 +217,7 @@
         isRunning = true;
         playIco?.classList.add('hidden');
         stopIco?.classList.remove('hidden');
-        if (statusTxt) statusTxt.textContent = 'STOP BEAT STREAM';
+        if (statusTxt) statusTxt.textContent = 'Dừng Audio';
         overlay?.classList.add('hidden');
         synthInterval = setInterval(triggerSynthBeat, 240);
         draw();
@@ -224,7 +227,7 @@
         cancelAnimationFrame(animId);
         playIco?.classList.remove('hidden');
         stopIco?.classList.add('hidden');
-        if (statusTxt) statusTxt.textContent = 'START BEAT STREAM';
+        if (statusTxt) statusTxt.textContent = 'Kích hoạt Audio';
         overlay?.classList.remove('hidden');
         if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
       }

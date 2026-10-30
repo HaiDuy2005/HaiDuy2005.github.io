@@ -1,104 +1,95 @@
 ---
 import { siteConfig } from '../data/siteConfig';
-
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
-function formatHref(href: string) {
-  if (href === '/') return `${baseUrl}/` || '/';
-  return `${baseUrl}${href}`;
-}
+const h = (path: string) => path === '/' ? `${baseUrl}/` || '/' : `${baseUrl}${path}`;
 ---
 
-<footer class="mt-auto border-t border-[#1F263B] bg-[#070911]/90 backdrop-blur-md pt-12 pb-8">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
-      
-      <!-- Brand & Mission -->
-      <div class="md:col-span-2 space-y-4">
-        <div class="flex items-center gap-3">
-          <div class="w-8 h-8 rounded-lg bg-[#111522] border border-cyan-500/40 flex items-center justify-center">
-            <span class="font-mono text-cyan-400 font-bold">D</span>
+<footer style="margin-top:auto;border-top:1px solid var(--border);background:var(--bg-base);">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-12">
+    <div class="grid grid-cols-1 sm:grid-cols-12 gap-10">
+
+      <!-- Brand column -->
+      <div class="sm:col-span-5 space-y-4">
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg flex items-center justify-center"
+               style="background:var(--bg-card);border:1px solid rgba(34,211,238,0.2);">
+            <span style="font-family:var(--font-mono);color:var(--cyan);font-weight:700;font-size:15px;">D</span>
           </div>
-          <span class="font-heading font-black tracking-wider text-xl text-white">
-            DUY<span class="text-purple-400">VERSE</span>
+          <span style="font-family:var(--font-heading);font-weight:800;font-size:15px;color:var(--text-high);">
+            DUY<span style="color:var(--violet);">VERSE</span>
           </span>
         </div>
-        <p class="text-sm text-gray-400 max-w-md font-sans leading-relaxed">
+
+        <p style="font-size:13px;color:var(--text-low);line-height:1.7;max-width:30ch;">
           {siteConfig.author.bio}
         </p>
-        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#111522] border border-[#1F263B] text-xs font-mono text-gray-400">
-          <span class="h-2 w-2 rounded-full bg-cyan-400 animate-pulse"></span>
-          <span>HOSTED ON GITHUB PAGES • STATIC 0-RUNTIME</span>
+
+        <!-- Socials -->
+        <div class="flex items-center gap-3 pt-1">
+          <a href={siteConfig.author.github} target="_blank" rel="noopener noreferrer"
+             class="btn-ghost" style="padding:7px 14px;font-size:12px;">
+            GitHub ↗
+          </a>
+          <a href={siteConfig.author.linkedin} target="_blank" rel="noopener noreferrer"
+             class="btn-ghost" style="padding:7px 14px;font-size:12px;">
+            LinkedIn ↗
+          </a>
         </div>
       </div>
 
-      <!-- Quick Links -->
-      <div>
-        <h4 class="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-4">NAVIGATION</h4>
-        <ul class="space-y-2 text-sm font-mono">
-          {siteConfig.navigation.map((item) => (
+      <!-- Spacer -->
+      <div class="hidden sm:block sm:col-span-1"></div>
+
+      <!-- Navigation -->
+      <div class="sm:col-span-3">
+        <p class="section-label mb-4">Navigation</p>
+        <ul class="space-y-2">
+          {siteConfig.navigation.map(item => (
             <li>
-              <a 
-                href={formatHref(item.href)}
-                class="text-gray-400 hover:text-white hover:translate-x-1 inline-block transition-transform duration-150"
-              >
-                // {item.name}
+              <a href={h(item.href)}
+                 style="font-family:var(--font-mono);font-size:13px;color:var(--text-low);"
+                 class="hover:text-white transition-colors">
+                {item.name}
               </a>
             </li>
           ))}
         </ul>
       </div>
 
-      <!-- Connect & Socials -->
-      <div>
-        <h4 class="text-xs font-mono text-purple-400 uppercase tracking-widest mb-4">TRANSMISSIONS</h4>
-        <ul class="space-y-2 text-sm font-mono">
+      <!-- Contact -->
+      <div class="sm:col-span-3">
+        <p class="section-label mb-4">Contact</p>
+        <ul class="space-y-2">
           <li>
-            <a 
-              href={siteConfig.author.github} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="text-gray-400 hover:text-cyan-400 flex items-center gap-2 transition-colors"
-            >
-              <span>GitHub</span>
-              <span class="text-xs text-gray-600">↗</span>
+            <a href={`mailto:${siteConfig.author.email}`}
+               style="font-family:var(--font-mono);font-size:12px;color:var(--text-low);"
+               class="hover:text-white transition-colors break-all">
+              {siteConfig.author.email}
             </a>
           </li>
           <li>
-            <a 
-              href={siteConfig.author.linkedin} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="text-gray-400 hover:text-purple-400 flex items-center gap-2 transition-colors"
-            >
-              <span>LinkedIn</span>
-              <span class="text-xs text-gray-600">↗</span>
-            </a>
-          </li>
-          <li>
-            <a 
-              href={`mailto:${siteConfig.author.email}`}
-              class="text-gray-400 hover:text-emerald-400 flex items-center gap-2 transition-colors"
-            >
-              <span>Email Transmission</span>
-              <span class="text-xs text-gray-600">↗</span>
-            </a>
+            <div class="flex items-center gap-1.5 mt-3" style="font-size:12px;font-family:var(--font-mono);">
+              <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--lime);display:inline-block;"></span>
+              <span style="color:var(--lime);">Open to Internship</span>
+            </div>
           </li>
         </ul>
       </div>
 
     </div>
 
-    <!-- Bottom Line -->
-    <div class="pt-6 border-t border-[#1F263B]/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-gray-500">
-      <div>
-        © 2026 DUYVERSE. All rights reserved.
-      </div>
-      <div class="flex items-center gap-3">
-        <span class="text-cyan-400/80">CORE: ASTRO 7</span>
-        <span>•</span>
-        <span class="text-purple-400/80">STYLE: CYBER DYNAMICS</span>
-        <span>•</span>
-        <span class="text-emerald-400/80">AUDIO: LO-FI FLOW</span>
+    <!-- Bottom bar -->
+    <div class="mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3"
+         style="border-top:1px solid var(--border);">
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--text-low);">
+        © 2026 Duyverse. Built with Astro on GitHub Pages.
+      </span>
+      <div class="flex items-center gap-3" style="font-family:var(--font-mono);font-size:11px;color:var(--text-low);">
+        <span style="color:var(--cyan);">Astro 7</span>
+        <span>·</span>
+        <span style="color:var(--violet);">TypeScript</span>
+        <span>·</span>
+        <span style="color:var(--lime);">Static SSG</span>
       </div>
     </div>
   </div>

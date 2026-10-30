@@ -1,29 +1,25 @@
 ---
 interface Props {
   text: string;
-  variant?: 'cyan' | 'purple' | 'emerald' | 'default';
+  variant?: 'default' | 'cyan' | 'violet' | 'lime';
   size?: 'sm' | 'md';
 }
-
 const { text, variant = 'default', size = 'sm' } = Astro.props;
 
-const variantStyles = {
-  default: 'bg-[#161C2E] text-gray-300 border-[#1F263B] hover:border-gray-500',
-  cyan: 'bg-cyan-950/40 text-cyan-300 border-cyan-500/30 hover:border-cyan-400',
-  purple: 'bg-purple-950/40 text-purple-300 border-purple-500/30 hover:border-purple-400',
-  emerald: 'bg-emerald-950/40 text-emerald-300 border-emerald-500/30 hover:border-emerald-400',
+const styles = {
+  default: 'background:var(--bg-raised);border-color:var(--border);color:var(--text-low);',
+  cyan:    'background:var(--cyan-dim);border-color:rgba(34,211,238,0.2);color:var(--cyan);',
+  violet:  'background:var(--violet-dim);border-color:rgba(167,139,250,0.2);color:var(--violet);',
+  lime:    'background:var(--lime-dim);border-color:rgba(163,230,53,0.2);color:var(--lime);',
 };
-
 const sizeStyles = {
-  sm: 'text-[11px] px-2.5 py-0.5',
-  md: 'text-xs px-3 py-1',
+  sm: 'padding:2px 8px;font-size:11px;',
+  md: 'padding:3px 10px;font-size:12px;',
 };
 ---
-
-<span class:list={[
-  "inline-flex items-center font-mono border rounded-md transition-colors duration-150",
-  variantStyles[variant],
-  sizeStyles[size]
-]}>
+<span
+  class="inline-flex items-center border rounded-md transition-colors"
+  style={`font-family:var(--font-mono);${styles[variant]}${sizeStyles[size]}`}
+>
   #{text}
 </span>

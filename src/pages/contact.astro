@@ -2,105 +2,69 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactForm from '../components/ContactForm.astro';
 import { siteConfig } from '../data/siteConfig';
-
 const { author } = siteConfig;
 ---
 
-<BaseLayout 
-  title="Transmission & Contact — DUYVERSE"
-  description="Liên hệ trao đổi công việc, cơ hội thực tập, thảo luận dự án công nghệ hoặc giao lưu âm nhạc với Hải Duy."
+<BaseLayout
+  title="Connect — DUYVERSE"
+  description="Liên hệ trao đổi cơ hội thực tập, dự án công nghệ hoặc giao lưu âm nhạc với Hải Duy."
 >
 
-  <div class="max-w-4xl mx-auto space-y-12">
-    
+  <div class="max-w-3xl mx-auto space-y-14 py-4">
+
     <!-- Header -->
-    <div class="space-y-3">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-xs font-mono text-cyan-300">
-        <span>// TRANSMISSION PROTOCOL</span>
-      </div>
-      <h1 class="text-3xl sm:text-4xl font-heading font-black text-white">
+    <div class="space-y-2">
+      <p class="section-label">// Transmission Protocol</p>
+      <h1 style="font-family:var(--font-heading);font-size:clamp(1.6rem,4vw,2.2rem);font-weight:900;color:var(--text-high);">
         Kết Nối & Trao Đổi
       </h1>
-      <p class="text-sm sm:text-base text-gray-400 max-w-2xl font-sans">
-        Mình luôn cởi mở đón nhận các cơ hội thực tập trong ngành phần mềm, tham gia các dự án phát triển Web & AI, hoặc đơn giản là trò chuyện về công nghệ và văn hóa Hip-hop.
+      <p style="font-size:14px;color:var(--text-low);max-width:56ch;line-height:1.7;">
+        Cởi mở với cơ hội thực tập phần mềm, cộng tác dự án Web & AI, hoặc trò chuyện về công nghệ và âm nhạc.
       </p>
     </div>
 
-    <!-- Main Contact Form & Dispatcher -->
+    <!-- Public channels — compact 3-col -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+      <a href={author.github} target="_blank" rel="noopener noreferrer"
+         class="card p-5 space-y-2 group" style="text-decoration:none;display:block;">
+        <div class="flex items-center justify-between">
+          <span class="section-label" style="color:var(--cyan);">GitHub</span>
+          <span style="color:var(--text-low);font-size:14px;" class="group-hover:translate-x-0.5 transition-transform">↗</span>
+        </div>
+        <p style="font-size:13px;color:var(--text-high);font-weight:600;">Code Repositories</p>
+        <p style="font-size:12px;color:var(--text-low);">Mã nguồn dự án và đóng góp mã nguồn mở.</p>
+      </a>
+
+      <a href={author.linkedin} target="_blank" rel="noopener noreferrer"
+         class="card p-5 space-y-2 group" style="text-decoration:none;display:block;">
+        <div class="flex items-center justify-between">
+          <span class="section-label" style="color:var(--violet);">LinkedIn</span>
+          <span style="color:var(--text-low);font-size:14px;" class="group-hover:translate-x-0.5 transition-transform">↗</span>
+        </div>
+        <p style="font-size:13px;color:var(--text-high);font-weight:600;">Professional Network</p>
+        <p style="font-size:12px;color:var(--text-low);">Kết nối hồ sơ nghề nghiệp và hoạt động chuyên môn.</p>
+      </a>
+
+      <div class="card p-5 space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="section-label" style="color:var(--lime);">Status</span>
+          <span class="w-2 h-2 rounded-full animate-pulse" style="background:var(--lime);"></span>
+        </div>
+        <p style="font-size:13px;color:var(--text-high);font-weight:600;">{author.location}</p>
+        <p style="font-size:12px;color:var(--lime);">{author.status}</p>
+      </div>
+
+    </div>
+
+    <!-- Contact form / email section -->
     <ContactForm />
 
-    <!-- Public Profiles Grid -->
-    <section class="space-y-4 pt-4">
-      <div class="text-xs font-mono text-gray-400 uppercase tracking-widest">// PUBLIC CHANNELS</div>
-      
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        
-        <!-- GitHub Card -->
-        <a 
-          href={author.github} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          class="p-5 rounded-xl bg-[#111522]/90 border border-[#1F263B] hover:border-cyan-500/40 hover:shadow-[0_0_20px_rgba(0,229,255,0.15)] transition-all group flex flex-col justify-between space-y-3"
-        >
-          <div class="flex items-center justify-between">
-            <span class="font-mono text-xs text-cyan-400 font-bold uppercase">GITHUB</span>
-            <span class="text-gray-500 group-hover:text-cyan-300 transition-colors">↗</span>
-          </div>
-          <div>
-            <div class="text-sm font-bold text-white group-hover:text-cyan-300 transition-colors">Code Repositories</div>
-            <p class="text-xs text-gray-400 mt-1">Khám phá mã nguồn các dự án và đóng góp mã nguồn mở.</p>
-          </div>
-          <div class="text-[11px] font-mono text-gray-500 truncate">
-            {author.github}
-          </div>
-        </a>
-
-        <!-- LinkedIn Card -->
-        <a 
-          href={author.linkedin} 
-          target="_blank" 
-          rel="noopener noreferrer"
-          class="p-5 rounded-xl bg-[#111522]/90 border border-[#1F263B] hover:border-purple-500/40 hover:shadow-[0_0_20px_rgba(139,92,246,0.15)] transition-all group flex flex-col justify-between space-y-3"
-        >
-          <div class="flex items-center justify-between">
-            <span class="font-mono text-xs text-purple-400 font-bold uppercase">LINKEDIN</span>
-            <span class="text-gray-500 group-hover:text-purple-300 transition-colors">↗</span>
-          </div>
-          <div>
-            <div class="text-sm font-bold text-white group-hover:text-purple-300 transition-colors">Professional Network</div>
-            <p class="text-xs text-gray-400 mt-1">Kết nối hồ sơ nghề nghiệp và cập nhật hoạt động chuyên môn.</p>
-          </div>
-          <div class="text-[11px] font-mono text-gray-500 truncate">
-            {author.linkedin}
-          </div>
-        </a>
-
-        <!-- Location & Availability Card -->
-        <div class="p-5 rounded-xl bg-[#111522]/90 border border-[#1F263B] flex flex-col justify-between space-y-3">
-          <div class="flex items-center justify-between">
-            <span class="font-mono text-xs text-emerald-400 font-bold uppercase">LOCATION & STATUS</span>
-            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          </div>
-          <div>
-            <div class="text-sm font-bold text-white">{author.location}</div>
-            <p class="text-xs text-gray-400 mt-1">{author.status}</p>
-          </div>
-          <div class="text-[11px] font-mono text-emerald-400">
-            RESPONSE TIME: &lt; 24H
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- Configuration Helper Box for the user -->
-    <div class="p-4 rounded-xl bg-[#111522]/40 border border-[#1F263B] text-xs font-mono text-gray-400 space-y-1">
-      <div class="text-cyan-400 font-bold">// HƯỚNG DẪN CẬP NHẬT THÔNG TIN CÁ NHÂN:</div>
-      <p>
-        Bạn có thể cập nhật địa chỉ Email, đường dẫn GitHub, LinkedIn hoặc liên kết CV của mình bất kỳ lúc nào tại file <code class="text-cyan-300">src/data/siteConfig.ts</code>. Website sẽ tự động đồng bộ trên toàn bộ các trang.
-      </p>
+    <!-- Config hint -->
+    <div class="p-4 rounded-lg" style="background:var(--bg-raised);border:1px solid var(--border);font-family:var(--font-mono);font-size:12px;color:var(--text-low);">
+      <span style="color:var(--cyan);font-weight:600;">// Config:</span>
+      Cập nhật Email, GitHub, LinkedIn tại <code style="color:var(--cyan);">src/data/siteConfig.ts</code>.
     </div>
 
   </div>
-
 </BaseLayout>

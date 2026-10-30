@@ -4,132 +4,109 @@ import { siteConfig } from '../data/siteConfig';
 const currentPath = Astro.url.pathname;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-function formatHref(href: string) {
-  if (href === '/') return `${baseUrl}/` || '/';
-  return `${baseUrl}${href}`;
+function href(path: string) {
+  return path === '/' ? `${baseUrl}/` || '/' : `${baseUrl}${path}`;
 }
-
-function isActive(href: string) {
-  const target = formatHref(href);
-  if (href === '/') {
-    return currentPath === target || currentPath === `${target}/` || currentPath === '/';
-  }
+function isActive(path: string) {
+  const target = href(path);
+  if (path === '/') return currentPath === target || currentPath === '/' || currentPath === `${baseUrl}/`;
   return currentPath.startsWith(target);
 }
 ---
 
-<header class="sticky top-0 z-50 w-full border-b border-[#1F263B]/80 bg-[#080A12]/85 backdrop-blur-xl transition-all duration-300">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16 sm:h-20">
-      
-      <!-- Brand Logo -->
-      <a href={formatHref('/')} class="flex items-center gap-3 group focus:outline-none">
-        <div class="relative w-9 h-9 rounded-lg bg-[#111522] border border-cyan-500/40 flex items-center justify-center overflow-hidden group-hover:border-cyan-400 group-hover:shadow-[0_0_15px_rgba(0,229,255,0.4)] transition-all">
-          <span class="font-mono text-cyan-400 font-bold text-lg">D</span>
-          <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 to-purple-500/10 pointer-events-none"></div>
+<header id="site-header"
+  class="sticky top-0 z-50 w-full transition-all duration-300"
+  style="background: rgba(7,9,15,0.85); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-bottom: 1px solid rgba(255,255,255,0.06);">
+
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="flex items-center justify-between h-[60px]">
+
+      <!-- Logo -->
+      <a href={href('/')} class="flex items-center gap-2.5 group focus:outline-none">
+        <div class="w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-all duration-200 group-hover:shadow-[0_0_16px_rgba(34,211,238,0.4)]"
+             style="background: var(--bg-card); border: 1px solid rgba(34,211,238,0.25);">
+          <span style="font-family:var(--font-mono); color:var(--cyan); font-weight:700; font-size:15px;">D</span>
         </div>
-        <div class="flex flex-col">
-          <span class="font-heading font-black tracking-wider text-base sm:text-lg text-white group-hover:text-cyan-400 transition-colors">
-            DUY<span class="text-purple-400">VERSE</span>
+        <div class="leading-none">
+          <span style="font-family:var(--font-heading); font-weight:800; font-size:15px; letter-spacing:-0.01em; color:var(--text-high);">
+            DUY<span style="color:var(--violet);">VERSE</span>
           </span>
-          <span class="font-mono text-[10px] text-gray-400 tracking-widest hidden sm:block">CODE • CREATE • FLOW</span>
+          <span class="hidden sm:block" style="font-family:var(--font-mono); font-size:9.5px; color:var(--text-low); letter-spacing:0.08em;">
+            CODE · CREATE · FLOW
+          </span>
         </div>
       </a>
 
-      <!-- Desktop Navigation -->
-      <nav class="hidden md:flex items-center gap-1 lg:gap-2">
-        {siteConfig.navigation.map((item) => {
+      <!-- Desktop Nav -->
+      <nav class="hidden md:flex items-center gap-1">
+        {siteConfig.navigation.map(item => {
           const active = isActive(item.href);
           return (
-            <a
-              href={formatHref(item.href)}
-              class:list={[
-                "relative px-3.5 py-1.5 text-xs font-mono tracking-widest uppercase rounded-md transition-all duration-200",
-                active 
-                  ? "text-cyan-300 bg-cyan-950/40 border border-cyan-500/30 shadow-[0_0_12px_rgba(0,229,255,0.15)]" 
-                  : "text-gray-400 hover:text-white hover:bg-white/5"
-              ]}
+            <a href={href(item.href)}
+               class="relative px-3 py-1.5 rounded-md transition-colors duration-150"
+               style={active
+                 ? 'font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;color:var(--cyan);background:var(--cyan-dim);'
+                 : 'font-family:var(--font-mono);font-size:12px;letter-spacing:0.06em;color:var(--text-low);'
+               }
+               data-active={active}
             >
               {item.name}
-              {active && (
-                <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-0.5 bg-cyan-400 rounded-full shadow-[0_0_8px_#00E5FF]"></span>
-              )}
+              {active && <span class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-3 h-px rounded-full" style="background:var(--cyan);"></span>}
             </a>
           );
         })}
       </nav>
 
-      <!-- Right Action / Status Indicator -->
-      <div class="hidden lg:flex items-center gap-4">
-        <div class="flex items-center gap-2 px-3 py-1 rounded-full bg-[#111522] border border-[#1F263B] text-xs font-mono">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
-          </span>
-          <span class="text-gray-300 text-[11px]">STATUS: <span class="text-emerald-400 font-semibold">ACTIVE</span></span>
+      <!-- Right side -->
+      <div class="flex items-center gap-3">
+        <!-- Status pill — desktop only -->
+        <div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded-full"
+             style="background:var(--bg-raised);border:1px solid var(--border);font-family:var(--font-mono);font-size:10.5px;color:var(--text-low);">
+          <span class="w-1.5 h-1.5 rounded-full animate-pulse" style="background:var(--lime);"></span>
+          <span>Intern-ready</span>
         </div>
 
-        <a 
-          href={formatHref('/contact')} 
-          class="px-4 py-1.5 text-xs font-mono uppercase font-semibold text-[#080A12] bg-gradient-to-r from-cyan-400 to-cyan-300 hover:from-cyan-300 hover:to-white rounded-md transition-all duration-200 shadow-[0_0_15px_rgba(0,229,255,0.25)] hover:shadow-[0_0_20px_rgba(0,229,255,0.5)]"
-        >
-          CONNECT
+        <!-- CTA -->
+        <a href={href('/contact')} class="btn-primary hidden sm:inline-flex" style="padding:7px 16px;font-size:12px;">
+          Connect
         </a>
-      </div>
 
-      <!-- Mobile Hamburger Button -->
-      <div class="flex md:hidden items-center gap-2">
-        <button
-          id="mobile-menu-btn"
-          type="button"
-          aria-label="Toggle Navigation Menu"
-          aria-expanded="false"
-          class="p-2 rounded-lg bg-[#111522] border border-[#1F263B] text-gray-300 hover:text-cyan-400 hover:border-cyan-500/40 focus:outline-none transition-colors"
-        >
-          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path id="hamburger-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-            <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        <!-- Hamburger -->
+        <button id="menu-btn" type="button" aria-label="Menu" aria-expanded="false"
+                class="flex md:hidden p-2 rounded-lg transition-colors"
+                style="background:var(--bg-raised);border:1px solid var(--border);">
+          <svg id="icon-open" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+          <svg id="icon-close" class="w-5 h-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
           </svg>
         </button>
       </div>
-
     </div>
   </div>
 
-  <!-- Mobile Drawer Menu -->
-  <div 
-    id="mobile-drawer" 
-    class="hidden md:hidden border-b border-[#1F263B] bg-[#080A12]/95 backdrop-blur-2xl transition-all duration-300"
-  >
-    <div class="px-4 pt-3 pb-6 space-y-2">
-      {siteConfig.navigation.map((item) => {
+  <!-- Mobile drawer -->
+  <div id="mobile-nav" class="hidden md:hidden border-t" style="background:rgba(7,9,15,0.97);border-color:var(--border);">
+    <div class="max-w-6xl mx-auto px-5 py-4 space-y-1">
+      {siteConfig.navigation.map(item => {
         const active = isActive(item.href);
         return (
-          <a
-            href={formatHref(item.href)}
-            class:list={[
-              "flex items-center justify-between px-4 py-2.5 rounded-lg text-sm font-mono tracking-wider transition-colors",
-              active 
-                ? "text-cyan-300 bg-cyan-950/40 border border-cyan-500/30" 
-                : "text-gray-300 hover:text-white hover:bg-white/5"
-            ]}
+          <a href={href(item.href)}
+             class="flex items-center justify-between px-3 py-2.5 rounded-lg"
+             style={active
+               ? 'font-family:var(--font-mono);font-size:13px;color:var(--cyan);background:var(--cyan-dim);'
+               : 'font-family:var(--font-mono);font-size:13px;color:var(--text-mid);'
+             }
           >
             <span>{item.name}</span>
-            {active && <span class="text-cyan-400 text-xs">● ACTIVE</span>}
+            {active && <span style="font-size:10px;color:var(--cyan);">●</span>}
           </a>
         );
       })}
-      
-      <div class="pt-4 mt-2 border-t border-[#1F263B] flex items-center justify-between">
-        <div class="flex items-center gap-2 text-xs font-mono text-gray-400">
-          <span class="h-2 w-2 rounded-full bg-emerald-400 inline-block"></span>
-          <span>READY TO CODE</span>
-        </div>
-        <a 
-          href={formatHref('/contact')}
-          class="px-4 py-1.5 text-xs font-mono text-[#080A12] bg-cyan-400 hover:bg-cyan-300 rounded font-bold"
-        >
-          CONTACT
+      <div class="pt-3">
+        <a href={href('/contact')} class="btn-primary w-full justify-center" style="font-size:13px;">
+          Connect
         </a>
       </div>
     </div>
@@ -137,18 +114,16 @@ function isActive(href: string) {
 </header>
 
 <script>
-  const btn = document.getElementById('mobile-menu-btn');
-  const drawer = document.getElementById('mobile-drawer');
-  const hamburger = document.getElementById('hamburger-icon');
-  const close = document.getElementById('close-icon');
+  const btn   = document.getElementById('menu-btn');
+  const nav   = document.getElementById('mobile-nav');
+  const open  = document.getElementById('icon-open');
+  const close = document.getElementById('icon-close');
 
-  if (btn && drawer && hamburger && close) {
-    btn.addEventListener('click', () => {
-      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
-      btn.setAttribute('aria-expanded', String(!isExpanded));
-      drawer.classList.toggle('hidden');
-      hamburger.classList.toggle('hidden');
-      close.classList.toggle('hidden');
-    });
-  }
+  btn?.addEventListener('click', () => {
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+    nav?.classList.toggle('hidden');
+    open?.classList.toggle('hidden');
+    close?.classList.toggle('hidden');
+  });
 </script>

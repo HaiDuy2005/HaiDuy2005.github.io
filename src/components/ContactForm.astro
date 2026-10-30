@@ -1,154 +1,102 @@
 ---
 import { siteConfig } from '../data/siteConfig';
-
 const { author } = siteConfig;
 ---
 
-<div class="rounded-xl bg-[#111522]/90 border border-[#1F263B] p-6 sm:p-8 backdrop-blur-md relative overflow-hidden">
-  
-  <div class="space-y-6">
+<div class="card p-6">
+
+  <div class="space-y-5">
     <div>
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-xs font-mono text-cyan-300 mb-3">
-        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span>
-        DIRECT COMM CHANNEL
-      </div>
-      <h3 class="text-xl sm:text-2xl font-heading font-bold text-white">
-        Khởi tạo kết nối trao đổi
+      <p class="section-label mb-1">// Direct Comm</p>
+      <h3 style="font-family:var(--font-heading);font-size:1.25rem;font-weight:800;color:var(--text-high);">
+        Gửi thông điệp trực tiếp
       </h3>
-      <p class="text-sm text-gray-400 mt-2 leading-relaxed">
-        Bạn có cơ hội thực tập, dự án Web / AI, hoặc muốn thảo luận về công nghệ và âm nhạc? 
-        Hãy gửi thông điệp trực tiếp hoặc sao chép địa chỉ truyền tin bên dưới.
+      <p style="font-size:13px;color:var(--text-low);margin-top:4px;line-height:1.65;">
+        Website chạy tĩnh trên GitHub Pages — form dưới đây sẽ mở ứng dụng mail của bạn với nội dung đã điền sẵn.
       </p>
     </div>
 
-    <!-- Email Card with Copy button -->
-    <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 p-4 rounded-lg bg-[#0C101A] border border-[#1F263B]">
-      <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-lg bg-[#161C2E] border border-cyan-500/30 flex items-center justify-center text-cyan-400 shrink-0">
-          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    <!-- Email copy row -->
+    <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 p-4 rounded-lg"
+         style="background:var(--bg-raised);border:1px solid var(--border);">
+      <div class="flex items-center gap-3 flex-1 min-w-0">
+        <div class="w-9 h-9 rounded-lg flex items-center justify-center shrink-0"
+             style="background:var(--bg-card);border:1px solid var(--border);">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"
+               style="color:var(--cyan);">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
           </svg>
         </div>
-        <div>
-          <span class="text-[11px] font-mono text-gray-500 uppercase tracking-wider block">Official Email</span>
-          <span id="email-address-text" class="text-sm sm:text-base font-mono text-white font-medium select-all">
-            {author.email}
-          </span>
-        </div>
+        <span id="email-text"
+              style="font-family:var(--font-mono);font-size:13px;color:var(--text-high);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+          {author.email}
+        </span>
       </div>
-
-      <div class="flex items-center gap-2">
-        <button
-          id="copy-email-btn"
-          type="button"
-          class="px-3.5 py-2 rounded-lg bg-[#161C2E] border border-cyan-500/40 text-cyan-300 hover:text-white hover:bg-cyan-500/20 text-xs font-mono font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer"
-        >
-          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-          </svg>
-          <span id="copy-btn-label">Copy Email</span>
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="copy-email" type="button" class="btn-ghost" style="padding:7px 14px;font-size:12px;">
+          Copy
         </button>
-
-        <a
-          href={`mailto:${author.email}?subject=Trao%20%C4%91%E1%BB%95i%20c%C3%B4ng%20vi%E1%BB%87c%20v%E1%BB%9Bi%20H%E1%BA%A3i%20Duy`}
-          class="px-3.5 py-2 rounded-lg bg-cyan-400 text-[#080A12] hover:bg-cyan-300 text-xs font-mono font-bold flex items-center justify-center gap-2 transition-all"
-        >
-          <span>Gửi Email</span>
-          <span>↗</span>
+        <a href={`mailto:${author.email}?subject=Trao đổi cùng Hải Duy`}
+           class="btn-primary" style="padding:7px 14px;font-size:12px;">
+          Gửi Email ↗
         </a>
       </div>
     </div>
 
-    <!-- Quick Message Generator / Static-friendly Dispatcher -->
-    <form id="contact-quick-form" class="space-y-4 pt-2">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label for="sender-name" class="block text-xs font-mono text-gray-400 mb-1.5 uppercase">Tên của bạn / Đơn vị</label>
-          <input 
-            type="text" 
-            id="sender-name" 
-            required 
-            placeholder="VD: Nguyễn Văn A (Công ty XYZ)"
-            class="w-full px-3.5 py-2.5 rounded-lg bg-[#0C101A] border border-[#1F263B] text-white text-sm focus:outline-none focus:border-cyan-400 font-sans"
-          />
+    <!-- Quick form -->
+    <form id="quick-form" class="space-y-3">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <div class="space-y-1">
+          <label for="f-name" class="section-label">Tên / Đơn vị</label>
+          <input id="f-name" type="text" required placeholder="Nguyễn Văn A"
+                 style="width:100%;padding:9px 12px;border-radius:8px;background:var(--bg-base);border:1px solid var(--border);color:var(--text-high);font-size:13px;outline:none;"
+                 onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'"/>
         </div>
-        <div>
-          <label for="sender-topic" class="block text-xs font-mono text-gray-400 mb-1.5 uppercase">Chủ đề thảo luận</label>
-          <select 
-            id="sender-topic"
-            class="w-full px-3.5 py-2.5 rounded-lg bg-[#0C101A] border border-[#1F263B] text-white text-sm focus:outline-none focus:border-cyan-400 font-sans"
-          >
-            <option value="Cơ hội thực tập IT / Web">Cơ hội thực tập IT / Web</option>
-            <option value="Hợp tác dự án AI / Công nghệ">Hợp tác dự án AI / Công nghệ</option>
-            <option value="Giao lưu âm nhạc / Hip-hop">Giao lưu âm nhạc / Hip-hop</option>
-            <option value="Khác">Chủ đề khác</option>
+        <div class="space-y-1">
+          <label for="f-topic" class="section-label">Chủ đề</label>
+          <select id="f-topic"
+                  style="width:100%;padding:9px 12px;border-radius:8px;background:var(--bg-base);border:1px solid var(--border);color:var(--text-high);font-size:13px;outline:none;">
+            <option>Cơ hội thực tập IT / Web</option>
+            <option>Hợp tác dự án AI / Cloud</option>
+            <option>Giao lưu âm nhạc / Hip-hop</option>
+            <option>Khác</option>
           </select>
         </div>
       </div>
-
-      <div>
-        <label for="sender-msg" class="block text-xs font-mono text-gray-400 mb-1.5 uppercase">Nội dung thông điệp</label>
-        <textarea 
-          id="sender-msg" 
-          rows="4" 
-          required 
-          placeholder="Hãy mô tả ngắn gọn nội dung bạn muốn trao đổi..."
-          class="w-full px-3.5 py-2.5 rounded-lg bg-[#0C101A] border border-[#1F263B] text-white text-sm focus:outline-none focus:border-cyan-400 font-sans"
-        ></textarea>
+      <div class="space-y-1">
+        <label for="f-msg" class="section-label">Nội dung</label>
+        <textarea id="f-msg" rows="4" required placeholder="Mô tả ngắn điều bạn muốn trao đổi..."
+                  style="width:100%;padding:9px 12px;border-radius:8px;background:var(--bg-base);border:1px solid var(--border);color:var(--text-high);font-size:13px;outline:none;resize:vertical;"
+                  onfocus="this.style.borderColor='var(--cyan)'" onblur="this.style.borderColor='var(--border)'"></textarea>
       </div>
-
-      <button
-        type="submit"
-        class="w-full sm:w-auto px-6 py-3 rounded-lg bg-gradient-to-r from-cyan-400 to-purple-500 hover:from-cyan-300 hover:to-purple-400 text-[#080A12] font-mono font-bold text-sm tracking-wider uppercase transition-all shadow-[0_0_20px_rgba(0,229,255,0.25)] cursor-pointer"
-      >
-        MỞ TRANSMISSION QUA EMAIL CLIENT →
+      <button type="submit" class="btn-primary w-full justify-center" style="font-size:13px;">
+        Mở Email Client →
       </button>
-
-      <p class="text-[11px] font-mono text-gray-500">
-        * Static Notice: Website triển khai trên GitHub Pages, nút trên sẽ mở ứng dụng mail của bạn với tiêu đề và nội dung được tạo tự động.
-      </p>
     </form>
-
   </div>
 </div>
 
 <script>
-  // Copy Email to clipboard with visual toast feedback
-  const copyBtn = document.getElementById('copy-email-btn');
-  const label = document.getElementById('copy-btn-label');
-  const emailElem = document.getElementById('email-address-text');
+  const emailElem = document.getElementById('email-text');
+  const copyBtn   = document.getElementById('copy-email');
 
-  if (copyBtn && label && emailElem) {
-    copyBtn.addEventListener('click', async () => {
-      const email = emailElem.textContent?.trim() || '';
-      try {
-        await navigator.clipboard.writeText(email);
-        label.textContent = 'Đã sao chép!';
-        copyBtn.classList.add('border-emerald-400', 'text-emerald-300');
-        setTimeout(() => {
-          label.textContent = 'Copy Email';
-          copyBtn.classList.remove('border-emerald-400', 'text-emerald-300');
-        }, 2500);
-      } catch (err) {
-        console.error('Copy failed', err);
-      }
-    });
-  }
+  copyBtn?.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(emailElem?.textContent?.trim() || '');
+      if (copyBtn) { copyBtn.textContent = 'Copied!'; }
+      setTimeout(() => { if (copyBtn) copyBtn.textContent = 'Copy'; }, 2000);
+    } catch {}
+  });
 
-  // Pre-fill mailto from the quick form
-  const form = document.getElementById('contact-quick-form');
-  if (form && emailElem) {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const targetEmail = emailElem.textContent?.trim() || 'contact@duyverse.dev';
-      const name = (document.getElementById('sender-name') as HTMLInputElement)?.value;
-      const topic = (document.getElementById('sender-topic') as HTMLSelectElement)?.value;
-      const msg = (document.getElementById('sender-msg') as HTMLTextAreaElement)?.value;
-
-      const subject = encodeURIComponent(`[Duyverse Contact] ${topic} - ${name}`);
-      const body = encodeURIComponent(`Xin chào Hải Duy,\n\nTôi là ${name}.\n\nNội dung trao đổi:\n${msg}\n\nTrân trọng,\n${name}`);
-
-      window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
-    });
-  }
+  document.getElementById('quick-form')?.addEventListener('submit', e => {
+    e.preventDefault();
+    const email = emailElem?.textContent?.trim() || '';
+    const name  = (document.getElementById('f-name') as HTMLInputElement)?.value;
+    const topic = (document.getElementById('f-topic') as HTMLSelectElement)?.value;
+    const msg   = (document.getElementById('f-msg') as HTMLTextAreaElement)?.value;
+    const sub   = encodeURIComponent(`[Duyverse] ${topic} - ${name}`);
+    const body  = encodeURIComponent(`Xin chào Hải Duy,\n\nTôi là ${name}.\n\n${msg}\n\nTrân trọng,\n${name}`);
+    location.href = `mailto:${email}?subject=${sub}&body=${body}`;
+  });
 </script>

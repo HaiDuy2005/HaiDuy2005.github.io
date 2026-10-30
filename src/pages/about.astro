@@ -1,202 +1,161 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { siteConfig } from '../data/siteConfig';
-
 const { author, skills } = siteConfig;
 const baseUrl = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<BaseLayout 
-  title="About Hải Duy — Journey, Skills & Creative Flow"
-  description="Câu chuyện cá nhân, hành trình học tập Công nghệ Thông tin, kỹ năng lập trình và niềm đam mê Hip-hop của Hải Duy."
+<BaseLayout
+  title="About Hải Duy — IT Student & Developer"
+  description="Câu chuyện hành trình học tập IT, kỹ năng lập trình, định hướng Cloud & AI và niềm đam mê Hip-hop của Hải Duy."
 >
-  
-  <div class="max-w-4xl mx-auto space-y-16">
-    
-    <!-- Top Bio & Avatar Grid -->
-    <section class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center pt-4">
-      
-      <!-- Avatar Graphic -->
-      <div class="md:col-span-4 flex justify-center">
-        <div class="relative w-48 h-48 sm:w-56 sm:h-56 rounded-2xl overflow-hidden border-2 border-cyan-500/40 shadow-[0_0_30px_rgba(0,229,255,0.2)] bg-[#111522]">
-          <img 
-            src={author.avatar} 
-            alt={author.name}
-            class="w-full h-full object-cover"
-          />
-          <div class="absolute bottom-2 left-2 right-2 px-2.5 py-1 rounded-md bg-[#080A12]/90 border border-cyan-500/30 text-center font-mono text-[10px] text-cyan-300">
-            DUYVERSE // AVATAR
+
+  <div class="max-w-3xl mx-auto space-y-16 py-4">
+
+    <!-- ─── Bio header ─── -->
+    <section class="grid grid-cols-1 sm:grid-cols-12 gap-8 items-center">
+
+      <!-- Avatar -->
+      <div class="sm:col-span-4 flex justify-center sm:justify-start">
+        <div class="relative w-44 h-44 rounded-2xl overflow-hidden"
+             style="border:1px solid var(--border-mid);box-shadow:0 0 40px rgba(34,211,238,0.1);">
+          <img src={author.avatar} alt={author.name} class="w-full h-full object-cover"/>
+          <div class="absolute bottom-0 inset-x-0 h-1"
+               style="background:linear-gradient(to right,var(--cyan),var(--violet));"></div>
+        </div>
+      </div>
+
+      <!-- Bio text -->
+      <div class="sm:col-span-8 space-y-4">
+        <div>
+          <p class="section-label mb-1.5">// Personal Profile</p>
+          <h1 style="font-family:var(--font-heading);font-size:2rem;font-weight:900;color:var(--text-high);">
+            {author.name}
+          </h1>
+          <p style="font-family:var(--font-mono);font-size:13px;color:var(--cyan);margin-top:4px;">
+            {author.role}
+          </p>
+        </div>
+
+        <p style="font-size:14px;color:var(--text-mid);line-height:1.8;max-width:50ch;">
+          {author.bio}
+        </p>
+
+        <!-- Status & CV -->
+        <div class="flex flex-wrap gap-3 pt-1">
+          <div class="pill" style="color:var(--lime);border-color:rgba(163,230,53,0.2);background:var(--lime-dim);">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--lime);display:inline-block;"></span>
+            {author.status}
           </div>
+          {author.cvUrl
+            ? <a href={author.cvUrl} target="_blank" rel="noopener noreferrer" class="btn-primary" style="padding:7px 18px;font-size:12px;">
+                Tải CV PDF
+              </a>
+            : <span class="pill">CV đang cập nhật — liên hệ qua Email</span>
+          }
         </div>
       </div>
+    </section>
 
-      <!-- Bio Overview -->
-      <div class="md:col-span-8 space-y-4">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-xs font-mono text-cyan-300">
-          <span>// PERSONAL PROFILE</span>
-        </div>
+    <!-- ─── 3 Specializations ─── -->
+    <section class="space-y-5">
+      <div>
+        <p class="section-label mb-1">// Roadmap & Vision</p>
+        <h2 style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--text-high);">
+          Định Hướng Chuyên Môn
+        </h2>
+      </div>
 
-        <h1 class="text-3xl sm:text-4xl font-heading font-black text-white">
-          {author.name} <span class="text-gray-500 text-2xl font-mono">({author.nickname})</span>
-        </h1>
-
-        <p class="text-sm font-mono text-cyan-400">
-          {author.role}
-        </p>
-
-        <p class="text-base text-gray-300 leading-relaxed font-sans">
-          Chào bạn! Mình là một sinh viên năm cuối chuyên ngành Công nghệ Thông tin. Với niềm say mê sâu sắc dành cho lập trình phần mềm, mình định hướng phát triển bản thân trở thành một kỹ sư phần mềm vững chắc về nền tảng Web, am hiểu kiến trúc Cloud và chủ động đón đầu làn sóng ứng dụng AI trong thực tế.
-        </p>
-
-        <div class="pt-2 flex flex-wrap items-center gap-3">
-          {author.cvUrl ? (
-            <a 
-              href={author.cvUrl} 
-              target="_blank" 
-              rel="noopener noreferrer"
-              class="px-4 py-2 rounded-lg bg-cyan-400 hover:bg-cyan-300 text-[#080A12] font-mono text-xs font-bold uppercase transition-all shadow-[0_0_15px_rgba(0,229,255,0.3)]"
-            >
-              Tải CV Bản PDF
-            </a>
-          ) : (
-            <div class="px-3.5 py-2 rounded-lg bg-[#111522] border border-[#1F263B] text-xs font-mono text-gray-400 flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-              <span>CV: Đang hoàn thiện bản mới nhất (Liên hệ qua Email nếu cần bản nháp)</span>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {[
+          { n: '01', label: 'Web Development',  color: 'var(--cyan)',   body: 'Xây dựng ứng dụng web theo Clean Architecture, ưu tiên tốc độ tải, accessibility và UX mượt mà.' },
+          { n: '02', label: 'Cloud & DevOps',   color: 'var(--violet)', body: 'CI/CD với GitHub Actions, Docker, kiến trúc microservices và hạ tầng đám mây.' },
+          { n: '03', label: 'AI Integration',   color: 'var(--lime)',   body: 'Nhúng LLM, RAG pipeline vào phần mềm thực tế để tăng năng suất và giải quyết bài toán người dùng.' },
+        ].map(spec => (
+          <div class="card p-5 space-y-2">
+            <div class="flex items-baseline gap-2">
+              <span style={`font-family:var(--font-mono);font-size:11px;color:${spec.color};font-weight:600;`}>{spec.n}</span>
+              <h3 style={`font-family:var(--font-heading);font-size:14px;font-weight:700;color:${spec.color};`}>{spec.label}</h3>
             </div>
-          )}
-        </div>
-      </div>
-
-    </section>
-
-    <!-- HÀNH TRÌNH HỌC TẬP & ĐỊNH HƯỚNG NGHỀ NGHIỆP -->
-    <section class="space-y-6 pt-8 border-t border-[#1F263B]">
-      <div>
-        <div class="text-xs font-mono text-purple-400 uppercase tracking-widest mb-1">// ROADMAP & VISION</div>
-        <h2 class="text-2xl font-heading font-bold text-white">Định Hướng Chuyên Môn</h2>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        
-        <div class="p-6 rounded-xl bg-[#111522]/80 border border-[#1F263B] space-y-2">
-          <div class="text-cyan-400 font-mono text-sm font-bold">01. Web Development</div>
-          <p class="text-xs text-gray-300 leading-relaxed">
-            Tập trung xây dựng các ứng dụng web có cấu trúc chuẩn mực (clean architecture), ưu tiên tối đa khả năng tiếp cận (accessibility), hiệu năng và trải nghiệm giao diện người dùng.
-          </p>
-        </div>
-
-        <div class="p-6 rounded-xl bg-[#111522]/80 border border-[#1F263B] space-y-2">
-          <div class="text-purple-400 font-mono text-sm font-bold">02. Cloud & DevOps</div>
-          <p class="text-xs text-gray-300 leading-relaxed">
-            Làm chủ quy trình tự động hóa CI/CD, đóng gói ứng dụng với Docker, tìm hiểu kiến trúc microservices và triển khai hệ thống linh hoạt trên nền tảng đám mây.
-          </p>
-        </div>
-
-        <div class="p-6 rounded-xl bg-[#111522]/80 border border-[#1F263B] space-y-2">
-          <div class="text-emerald-400 font-mono text-sm font-bold">03. AI Integration</div>
-          <p class="text-xs text-gray-300 leading-relaxed">
-            Nghiên cứu cách nhúng các mô hình trí tuệ nhân tạo (LLM, RAG pipelines) vào các bài toán phần mềm thực tế nhằm nâng cao năng suất và giải quyết nhu cầu người dùng.
-          </p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- HỆ THỐNG KỸ NĂNG THEO NHÓM -->
-    <section class="space-y-6 pt-8 border-t border-[#1F263B]">
-      <div>
-        <div class="text-xs font-mono text-cyan-400 uppercase tracking-widest mb-1">// VERIFIED SKILLS</div>
-        <h2 class="text-2xl font-heading font-bold text-white">Kỹ Năng Theo Nhóm</h2>
-        <p class="text-xs text-gray-400 mt-1 font-mono">
-          * Danh sách kỹ năng thực tế đã được kiểm chứng qua các bài thực hành và đồ án học tập.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {skills.map((group) => (
-          <div class="p-5 rounded-xl bg-[#111522]/90 border border-[#1F263B]">
-            <h3 class="font-mono text-xs font-bold text-cyan-300 uppercase tracking-wider mb-3 pb-2 border-b border-[#1F263B]">
-              {group.category}
-            </h3>
-            <ul class="space-y-2 text-xs font-mono text-gray-300">
-              {group.items.map((item) => (
-                <li class="flex items-center gap-2">
-                  <span class="text-cyan-400">›</span>
-                  <span>{item.name}</span>
-                </li>
-              ))}
-            </ul>
+            <p style="font-size:13px;color:var(--text-low);line-height:1.65;">{spec.body}</p>
           </div>
         ))}
       </div>
     </section>
 
-    <!-- TIMELINE / CỘT MỐC ĐÃ QUA -->
-    <section class="space-y-6 pt-8 border-t border-[#1F263B]">
+    <!-- ─── Skills grid ─── -->
+    <section class="space-y-5">
       <div>
-        <div class="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-1">// CHRONOLOGY</div>
-        <h2 class="text-2xl font-heading font-bold text-white">Cột Mốc Phát Triển</h2>
+        <p class="section-label mb-1">// Verified Skills</p>
+        <h2 style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--text-high);">
+          Kỹ Năng Theo Nhóm
+        </h2>
+        <p style="font-size:12px;color:var(--text-low);margin-top:4px;font-family:var(--font-mono);">
+          * Kỹ năng thực tế đã kiểm chứng qua bài tập và đồ án học tập.
+        </p>
       </div>
 
-      <div class="relative border-l border-[#1F263B] ml-3 pl-6 space-y-8">
-        
-        <div class="relative">
-          <span class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-cyan-400 shadow-[0_0_8px_#00E5FF]"></span>
-          <div class="font-mono text-xs text-cyan-400">2026 — HIỆN TẠI</div>
-          <h3 class="text-base font-bold text-white mt-1">Xây dựng Portfolio Duyverse & Thử nghiệm AI</h3>
-          <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-            Phát triển không gian số cá nhân tĩnh trên GitHub Pages với Astro, tìm hiểu các luồng làm việc tự động với LLM và chuẩn bị cho các đợt ứng tuyển thực tập.
-          </p>
+      <div class="card p-6">
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-x-10 gap-y-8">
+          {skills.map(group => (
+            <div class="space-y-2.5">
+              <p style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;padding-bottom:6px;border-bottom:1px solid var(--border);">
+                {group.category}
+              </p>
+              <ul class="space-y-1.5">
+                {group.items.map(item => (
+                  <li style="font-family:var(--font-mono);font-size:12px;color:var(--text-low);display:flex;align-items:center;gap:8px;">
+                    <span style="width:5px;height:5px;border-radius:50%;background:var(--border-hi);flex-shrink:0;display:inline-block;"></span>
+                    {item.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
-
-        <div class="relative">
-          <span class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-purple-400"></span>
-          <div class="font-mono text-xs text-purple-400">2025</div>
-          <h3 class="text-base font-bold text-white mt-1">Đồ án Web & Hệ thống Quản lý</h3>
-          <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-            Xây dựng hệ thống quản lý câu lạc bộ văn nghệ với ASP.NET Core, tối ưu hóa cơ sở dữ liệu và tham gia xây dựng website sự kiện khoa CNTT.
-          </p>
-        </div>
-
-        <div class="relative">
-          <span class="absolute -left-[31px] top-1 w-3 h-3 rounded-full bg-gray-500"></span>
-          <div class="font-mono text-xs text-gray-400">2023 - 2024</div>
-          <h3 class="text-base font-bold text-white mt-1">Nền tảng Lập trình & Khoa học Máy tính</h3>
-          <p class="text-xs text-gray-400 mt-1 leading-relaxed">
-            Tiếp cận cấu trúc dữ liệu và giải thuật, lập trình hướng đối tượng (OOP), cơ sở dữ liệu quan hệ và nguyên lý mạng máy tính.
-          </p>
-        </div>
-
       </div>
     </section>
 
-    <!-- SỞ THÍCH: ÂM NHẠC & HIP-HOP -->
-    <section class="space-y-6 pt-8 border-t border-[#1F263B]">
+    <!-- ─── Timeline ─── -->
+    <section class="space-y-5">
       <div>
-        <div class="text-xs font-mono text-purple-400 uppercase tracking-widest mb-1">// CREATIVE DNA</div>
-        <h2 class="text-2xl font-heading font-bold text-white">Âm Nhạc, Hip-hop & Sáng Tạo</h2>
+        <p class="section-label mb-1">// Chronology</p>
+        <h2 style="font-family:var(--font-heading);font-size:1.4rem;font-weight:800;color:var(--text-high);">
+          Cột Mốc Phát Triển
+        </h2>
       </div>
 
-      <div class="p-6 rounded-xl bg-gradient-to-br from-[#111522] to-[#151126] border border-purple-500/30 space-y-4">
-        <p class="text-sm text-gray-300 leading-relaxed font-sans">
-          Âm nhạc không chỉ là một sở thích giải trí mà là một phần không thể tách rời trong phong cách làm việc của mình. 
-          Văn hóa Hip-hop dạy cho mình sự kiên trì luyện tập, khả năng ứng biến tự do (Freestyle) khi giải quyết các vấn đề kỹ thuật và tầm quan trọng của việc có một "bản sắc riêng" trong từng sản phẩm tạo ra.
-        </p>
+      <div style="padding-left:20px;border-left:1px solid var(--border);" class="space-y-8">
+        {[
+          { year:'2026 — Nay', color:'var(--cyan)',   title:'Portfolio Duyverse & AI Experiments', body:'Phát triển không gian số tĩnh với Astro, nghiên cứu LLM workflows và chuẩn bị ứng tuyển thực tập.' },
+          { year:'2025',       color:'var(--violet)', title:'Đồ án Web & Hệ thống Quản lý',        body:'Xây dựng hệ thống quản lý CLB với ASP.NET Core, website sự kiện khoa CNTT.' },
+          { year:'2023 - 2024',color:'var(--text-low)',title:'Nền tảng CS & Lập trình',            body:'Cấu trúc dữ liệu, OOP, cơ sở dữ liệu quan hệ, nguyên lý mạng máy tính.' },
+        ].map(evt => (
+          <div class="relative" style="padding-left:16px;">
+            <div style={`position:absolute;left:-24px;top:4px;width:8px;height:8px;border-radius:50%;background:${evt.color};box-shadow:0 0 8px ${evt.color};`}></div>
+            <p style={`font-family:var(--font-mono);font-size:11px;color:${evt.color};margin-bottom:4px;`}>{evt.year}</p>
+            <h3 style="font-family:var(--font-heading);font-size:15px;font-weight:700;color:var(--text-high);margin-bottom:4px;">{evt.title}</h3>
+            <p style="font-size:13px;color:var(--text-low);line-height:1.65;">{evt.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
 
-        <div class="flex flex-wrap gap-2 pt-2">
-          <span class="px-3 py-1 rounded bg-[#161C2E] border border-[#1F263B] text-xs font-mono text-purple-300">
-            ♫ Hip-hop & Boom Bap
-          </span>
-          <span class="px-3 py-1 rounded bg-[#161C2E] border border-[#1F263B] text-xs font-mono text-cyan-300">
-            ♫ Cyberpunk Synthwave
-          </span>
-          <span class="px-3 py-1 rounded bg-[#161C2E] border border-[#1F263B] text-xs font-mono text-emerald-300">
-            ♫ Lo-Fi Beatmaking
-          </span>
-        </div>
+    <!-- ─── Music/Creative ─── -->
+    <section class="card p-6 space-y-3">
+      <p class="section-label" style="color:var(--violet);">// Creative DNA</p>
+      <h2 style="font-family:var(--font-heading);font-size:1.2rem;font-weight:800;color:var(--text-high);">
+        Âm Nhạc, Hip-hop & Sáng Tạo
+      </h2>
+      <p style="font-size:14px;color:var(--text-mid);line-height:1.8;max-width:60ch;">
+        Văn hóa Hip-hop dạy sự kiên trì luyện tập, khả năng freestyle ứng biến khi giải quyết vấn đề kỹ thuật và tầm quan trọng của bản sắc riêng trong từng sản phẩm.
+      </p>
+      <div class="flex flex-wrap gap-2 pt-1">
+        {['Hip-hop & Boom Bap', 'Cyberpunk Synthwave', 'Lo-Fi Beatmaking'].map(g => (
+          <span class="pill pill-violet">{g}</span>
+        ))}
       </div>
     </section>
 
   </div>
-
 </BaseLayout>
